@@ -12,14 +12,14 @@ import { RegistroUsuarioService } from 'src/app/services/registro-usuario.servic
 import { Datos } from 'src/app/models/datosRegistro';
 import { AngularFirestore } from '@angular/fire/firestore';
 
-import { 
+import {
   Plugins,
   PushNotification,
   PushNotificationToken,
-  PushNotificationActionPerformed, 
+  PushNotificationActionPerformed,
   Capacitor
-  } from '@capacitor/core';
-  const { PushNotifications, Modals } = Plugins;
+} from '@capacitor/core';
+const { PushNotifications, Modals } = Plugins;
 
 
 
@@ -52,7 +52,7 @@ export class RegistroPage implements OnInit {
   }
 
   usuarioForm1 = {
-    codUsuario: "1",
+    codUsuario: '1',
     nombres: 'pibe',
     apellidos: 'valderrama',
     TipoDocumento: 'CC',
@@ -63,9 +63,9 @@ export class RegistroPage implements OnInit {
     correo: 'AA@gmail.com',
     sexo: true,
     activo: false,
-    token:""
+    token: ''
   };
-  
+
   constructor(
     private loginService: LoginService,
     private registroService: RegistroUsuarioService,
@@ -73,22 +73,27 @@ export class RegistroPage implements OnInit {
     private route: Router,
     public alertController: AlertController,
     private firestore: AngularFirestore
-    ) { }
+  ) { }
 
-    async presentAlert(mensaje: string) {
-      const alert = await this.alertController.create({
-        cssClass: 'my-custom-class',
-        header: 'Confirm',
-        subHeader: 'Subtitle',
-        message: mensaje,
-        buttons: ['OK']
-      });
-  
-      await alert.present();
-    }
+  async presentAlert(mensaje: string, codUsuario: string) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Confirm',
+      message: mensaje,
+      buttons: [
+        {
+          text: 'Ok',
+          handler: () => {
+            this.route.navigate(['verificacion/' + `${codUsuario}`]);
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
 
-    get email() { return this.usuarioForm.get('correo'); }
-    get documento() { return this.usuarioForm.get('numeroDocumento'); }
+  get email() { return this.usuarioForm.get('correo'); }
+  get documento() { return this.usuarioForm.get('numeroDocumento'); }
   //prueba se define objetos
 
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -109,68 +114,69 @@ export class RegistroPage implements OnInit {
   });
 
 
-  ngOnInit() {    
+  ngOnInit() {
+    this.obtenerTokenDispositivo();
     this.obtenerTipoDocumento();
     this.obtenerUniversidades();
     this.obtenerPerfiles();
   }
 
-  enviarDatos(form: Datos) {    
+  enviarDatos(form: Datos) {
+    if (this.usuarioForm1.token == "") {
+      this.obtenerTokenDispositivo();
+    } else {
+      //alert('Entro')
+      this.usuarioForm1.codUsuario = "-1";
+      this.usuarioForm1.nombres = form.nombres;
+      this.usuarioForm1.apellidos = form.apellidos;
+      this.usuarioForm1.TipoDocumento = form.TipoDocumento;
+      this.usuarioForm1.numeroDocumento = form.numeroDocumento;
+      this.usuarioForm1.celular = form.celular;
+      this.usuarioForm1.codPerfil = form.roles;
+      this.usuarioForm1.codInstitucion = form.codInstitucion;
+      this.usuarioForm1.correo = form.correo;
+      this.usuarioForm1.sexo = true;
+      this.usuarioForm1.activo = false;
+      this.usuarioForm1.token = this.token;
+      
+      //alert(this.usuarioForm1.token);      
+      
+      this.registroService.Guardar(this.usuarioForm1).pipe(
+        finalize(() => {
+          console.log('Servicio guardar completado correctamente');
+        })).subscribe(resp => {
+          this.usuarioRegistrado = resp
+          if (this.usuarioRegistrado[0].codUsuario != "-1") {
+            //realizo el registro en firebase
+            this.storeUser(this.token, this.usuarioRegistrado[0].codUsuario);
+            this.presentAlert("Usuario registrado correctamente, a su correo electronico <br> le fue enviado un codigo de activación", this.usuarioRegistrado[0].codUsuario);
+            this.limpiarFormulario();
+          }
+        });
+    }
+  }
 
+  obtenerTokenDispositivo() {
     //Obtener el token del dispositivo 
-    if(Capacitor.platform !== 'web'){
+    if (Capacitor.platform !== 'web') {
+      //alert('entro');
       PushNotifications.register();
       // On success, we should be able to receive notifications
-      PushNotifications.addListener('registration', 
+      PushNotifications.addListener('registration',
         (token: PushNotificationToken) => {
           //alert('Push registration success, token: ' + token.value);
           //console.log('Push registration success, token: ' + token.value)   
-          this.token = token.value; 
-          console.log(this.token);           
+          this.token = token.value;
+          this.usuarioForm1.token = token.value;
+          //console.log(this.token);
         }
       );
-      PushNotifications.addListener('registrationError', 
+      PushNotifications.addListener('registrationError',
         (error: any) => {
-          alert('Push registration success, token: ' + JSON.stringify(error));       
+          alert('Push registration success, token: ' + JSON.stringify(error));
         }
-      );    
-    }    
-    
-    //alert('Entro')
-    this.usuarioForm1.codUsuario = "-1";
-    this.usuarioForm1.nombres = form.nombres;
-    this.usuarioForm1.apellidos = form.apellidos;
-    this.usuarioForm1.TipoDocumento = form.TipoDocumento;
-    this.usuarioForm1.numeroDocumento = form.numeroDocumento;
-    this.usuarioForm1.celular = form.celular;
-    this.usuarioForm1.codPerfil = form.roles;
-    this.usuarioForm1.codInstitucion = form.codInstitucion;
-    this.usuarioForm1.correo = form.correo;
-    this.usuarioForm1.sexo = true;
-    this.usuarioForm1.activo = false;
-    this.usuarioForm1.token = this.token;
-
-
-    //console.log(this.usuarioForm1);
-    console.log(this.usuarioForm1);
-
-    //alert(this.usuario);
-    this.registroService.Guardar(this.usuarioForm1).pipe(
-      finalize(() => {
-        console.log('Servicio guardar completado correctamente');
-      })).subscribe(resp => {
-        this.usuarioRegistrado = resp
-        if (this.usuarioRegistrado[0].codUsuario != "-1") {
-
-          ////realizo el registro en firebase
-          this.storeUser(this.token, this.usuarioRegistrado[0].codUsuario);
-
-          this.presentAlert("Usuario registrado correctamente, a su correo electronico <br> le fue enviado un codigo de activación",);
-          this.limpiarFormulario();
-          //Direccionar al componente de activacion de codigo  
-          this.route.navigate(['verificacion/'+`${this.usuarioRegistrado[0].codUsuario}`]);
-        }
-      });
+      );
+    }
   }
 
   limpiarFormulario() {
@@ -179,6 +185,17 @@ export class RegistroPage implements OnInit {
       apellidos: '',
       TipoDocumento: '',
       numeroDocumento: '',
+      celular: '',
+      roles: '',
+      codInstitucion: '',
+      correo: ''
+    });
+  }
+
+  limpiarFormularioConsulta() {
+    this.usuarioForm.patchValue({
+      nombres: '',
+      apellidos: '',
       celular: '',
       roles: '',
       codInstitucion: '',
@@ -271,8 +288,10 @@ export class RegistroPage implements OnInit {
           this.usuarioForm.controls['celular'].setValue(this.usuarioExistente[0].celular);
           this.usuarioForm.controls['codInstitucion'].setValue(this.usuarioExistente[0].codInstitucion);
           this.usuarioForm.controls['correo'].setValue(this.usuarioExistente[0].correo);
+        } else {
+          this.limpiarFormularioConsulta();
         }
-        console.log(this.usuarioExistente)
+        //console.log(this.usuarioExistente)
       });
   }
 

@@ -2,22 +2,23 @@ import { Component, OnInit } from '@angular/core';
 
 import { finalize } from 'rxjs/operators';
 import { Router, RouterLink } from '@angular/router';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { LoginService } from 'src/app/services/login.service';
 
-import { 
+import {
   Plugins,
   PushNotification,
   PushNotificationToken,
-  PushNotificationActionPerformed 
-  } from '@capacitor/core';
-  const { PushNotifications, Modals } = Plugins;
-  
+  PushNotificationActionPerformed
+} from '@capacitor/core';
+const { PushNotifications, Modals } = Plugins;
+
 import { FCM } from '@capacitor-community/fcm';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Constantes } from 'src/app/utils/constantes.util';
 
-  const fcm = new FCM();
+
+const fcm = new FCM();
 
 @Component({
   selector: 'app-login',
@@ -40,9 +41,11 @@ export class LoginPage implements OnInit {
     private route: Router,
     public alertController: AlertController,
     private firestore: AngularFirestore,
-    public toastController: ToastController) { }
+    public toastController: ToastController,
+    public loadingController: LoadingController) { }
 
-    ngOnInit() {
+  ngOnInit() {
+    this.presentLoadingInicio();
     this.obtenerTipoDocumento();
     this.obternerInstituciones();
   }
@@ -51,7 +54,7 @@ export class LoginPage implements OnInit {
   async presentAlertUsuarioActivo() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: 'Bienvenido a nuestra aplicación APPIN',     
+      header: 'Bienvenido a nuestra aplicación APPIN',
       message: '"Tu aporte es muy importante para nosotros, nos ayudas a combatir el COVID"',
       buttons: [
         {
@@ -68,7 +71,7 @@ export class LoginPage implements OnInit {
   async presentAlertUsuarioInActivo() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: 'Usuario No identificado',     
+      header: 'Usuario No identificado',
       message: '!Desea realizar el registro de su usuario¡',
       buttons: [
         {
@@ -90,24 +93,38 @@ export class LoginPage implements OnInit {
     await alert.present();
   }
 
-  async presentToast(mensaje:string) {
-    const toast = await this.toastController.create({
-      message: mensaje,
-      duration: 8000
+  //alerta de campos requeridos
+  async presentAlertCamposRequeridos() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Debe completar la información',
+      buttons: ['OK']
     });
-    toast.present();
+
+    await alert.present();
   }
 
-  /*Metodo para cargar los tipos de documento*/
-  // obtenerTipoDocumento() {
-  //   this.loginService.obtenerTiposDocumentos().finally(() =>{
-  //     console.log('Servicio completado correctamente');
-  //   }).then(resp =>{
-  //     this.tipoDocumentos = resp;
-  //     console.log(this.tipoDocumentos);
-  //   })
-  // }
+  //loading de cargue de aplicacion
+  async presentLoadingInicio() {
+    const loading = await this.loadingController.create({
+      duration: 500
+    });
+    await loading.present();
+    const { role, data } = await loading.onDidDismiss();
+  }
 
+  //loading de ingreso
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      message: 'Por favor espere....',
+      duration: 500
+    });
+    await loading.present();
+    const { role, data } = await loading.onDidDismiss();
+  }
+
+  //metodo de obtener tipo documento
   obtenerTipoDocumento() {
     this.loginService.obtenerTiposDocumentos().pipe(
       finalize(() => {
@@ -122,7 +139,7 @@ export class LoginPage implements OnInit {
         //console.log(this.tipoDocumentos);
       }, (error) => {
         this.mensajeError = error.message;
-        this.presentToast(error.message)
+        //this.presentToast(error.message)
       }
       );
   }
@@ -143,25 +160,29 @@ export class LoginPage implements OnInit {
   }
 
   /*Metodo para validar si el usuario esta activo en la base de datos*/
-  async validarIngreso() {
-
-    this.loginService.validarAcceso(this.tipoDocumento, this.numeroDocumento, this.universidad).pipe(
-      finalize(() => {
-        console.log('Servicio completado correctamente');
-        setTimeout(() => {
-          // this.spinner.hide();
-        }, 500);
-      }
-      )).subscribe(resp => {
-        this.usuario = resp;
-        console.log(this.usuario)
-        if (this.usuario[0].activo === true) {
-          sessionStorage.setItem(Constantes.DATOS_SESION_USUARIO, JSON.stringify(this.usuario[0])); 
-          /* Si el usuario esta activo lo direcciono a la ruta donde debe navegar la aplicacion */
-          this.presentAlertUsuarioActivo();
-        } else {
-          this.presentAlertUsuarioInActivo();
+  validarIngreso() {
+    if (this.tipoDocumento === undefined || this.numeroDocumento === undefined || this.universidad === undefined) {
+      this.presentAlertCamposRequeridos();
+    } else {
+      this.presentLoading();
+      this.loginService.validarAcceso(this.tipoDocumento, this.numeroDocumento, this.universidad).pipe(
+        finalize(() => {
+          console.log('Servicio completado correctamente');
+          setTimeout(() => {
+            //this.loadingCtrl.dismiss();
+          }, 500);
         }
-      });
+        )).subscribe(resp => {
+          this.usuario = resp;
+          console.log(this.usuario)
+          if (this.usuario[0].activo === true) {
+            sessionStorage.setItem(Constantes.DATOS_SESION_USUARIO, JSON.stringify(this.usuario[0]));
+            /* Si el usuario esta activo lo direcciono a la ruta donde debe navegar la aplicacion */
+            this.presentAlertUsuarioActivo();
+          } else {
+            this.presentAlertUsuarioInActivo();
+          }
+        });
+    }
   }
 }

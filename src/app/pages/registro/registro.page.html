@@ -96,9 +96,8 @@
       </ion-item>
     </ion-radio-group>
   </ion-list>
-  <section>   
-    <!-- [disabled]="usuarioForm.invalid" -->
-    <ion-button color="danger"  (click)="enviarDatos(usuarioForm.value)" expand="block">Registro</ion-button>
+  <section>      
+    <ion-button color="danger" [disabled]="usuarioForm.invalid" (click)="enviarDatos(usuarioForm.value)" expand="block">Registro</ion-button>
 </section> 
 </form>
 </ion-content>
