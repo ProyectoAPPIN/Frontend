@@ -28,6 +28,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/politica-tratamiento-datos/politica-tratamiento-datos.module').then( m => m.PoliticaTratamientoDatosPageModule)
   },
 
+
 ];
 
 @NgModule({
