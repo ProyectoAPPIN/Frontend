@@ -1,0 +1,7 @@
+{
+  "name": "appin",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

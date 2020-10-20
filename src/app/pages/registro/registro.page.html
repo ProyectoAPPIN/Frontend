@@ -1,0 +1,104 @@
+<ion-header class="ion-text-center">  
+  <img src="../../../assets/Banner.jpg"/>
+</ion-header>
+<ion-content class="fondo">    
+  <form novalidate [formGroup]="usuarioForm">      
+  <ion-item >
+    <ion-label style="font-family:  Helvetica; " >Tipo de Documento</ion-label>
+      <ion-select value="td1" okText="Listo" cancelText="Cancelar" formControlName="TipoDocumento">
+      <ion-select-option *ngFor="let tipo of tipoDocumentos" [value]="tipo.nomenclatura">
+      {{tipo.descripcion}}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+  
+  <ion-item> 
+    <ion-label position="floating" style="font-family:  Helvetica; ">Número de documento</ion-label>
+    <ion-input  (ionBlur)="obtenerUsuario()" formControlName="numeroDocumento"></ion-input>
+  </ion-item>
+  <div class="alert-danger" *ngIf="documento.invalid && (documento.dirty || documento.touched)">
+    <div class="container-error-message" *ngIf="documento.errors.required">
+      El Documento es requerido </div>     
+  </div>
+  <ion-item>
+    <ion-label position="floating" style="font-family:  Helvetica;">Nombres</ion-label>
+    <ion-input mask="(000-000)" formControlName="nombres" (keyup)="applyFilter($event)"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating" style="font-family:  Helvetica; ">Apellidos</ion-label>
+    <ion-input  formControlName="apellidos" (keyup)="applyFilter1($event)"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating" style="font-family:  Helvetica; ">Telefono celular</ion-label>
+    <ion-input formControlName="celular"></ion-input>
+  </ion-item>
+
+  <ion-item >
+    <ion-label style="font-family:  Helvetica;">Institución</ion-label>
+      <ion-select value="u1" okText="Listo" cancelText="Cancelar" formControlName="codInstitucion">
+        <ion-select-option *ngFor="let institucion of listaUniversidades" [value]="institucion.codInstitucion">
+          {{institucion.nombre}}
+          </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item >
+    <ion-label style="font-family:  Helvetica;">Roles</ion-label>
+      <ion-select value="u1" okText="Listo" cancelText="Cancelar" formControlName="roles">
+        <ion-select-option *ngFor="let perfil of listaPerfiles" [value]="perfil.codPerfil">
+          {{perfil.nombre}}
+          </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating" style="font-family:  Helvetica;">Correo electronico</ion-label>
+    <ion-input formControlName="correo" ></ion-input>
+  </ion-item>    
+  <div class="alert-danger" *ngIf="email.invalid && (email.dirty || email.touched)">
+    <div class="container-error-message" *ngIf="email.errors.required">
+      Email is required
+    </div>      
+    <div class="container-error-message"
+      *ngIf="(email.dirty || email.touched) && email.invalid && email.errors.pattern">
+      Debe ingresar un correo valido.
+    </div>
+  </div>
+  <ion-list>
+    <ion-radio-group value="biff" formControlName="sexo" >
+      <ion-list-header>
+        <ion-label style="font-family:  Helvetica;">Sexo</ion-label>
+      </ion-list-header>  
+      <ion-item>
+        <ion-label style="font-family:  Helvetica;">Masculino</ion-label>
+        <ion-radio slot="start" value="0"></ion-radio>
+        <ion-item>
+          <ion-label style="font-family:  Helvetica;">Femenino</ion-label>
+          <ion-radio slot="start" value="1"></ion-radio>
+        </ion-item>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+  <ion-list>
+    <ion-radio-group value="biff">
+      <ion-list-header>
+        <ion-label style="font-family:  Helvetica;">Terminos y condiciones</ion-label>
+      </ion-list-header>  
+      <ion-item>
+        <ion-label>Acepto</ion-label>
+        <ion-radio slot="start" value="biff"></ion-radio>
+        <ion-item>
+          <ion-label>No Acepto</ion-label>
+          <ion-radio slot="start" value="griff"></ion-radio>
+        </ion-item>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+  <section>   
+    <!-- [disabled]="usuarioForm.invalid" -->
+    <ion-button color="danger"  (click)="enviarDatos(usuarioForm.value)" expand="block">Registro</ion-button>
+</section> 
+</form>
+</ion-content>

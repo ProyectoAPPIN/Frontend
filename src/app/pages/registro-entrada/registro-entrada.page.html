@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+      <img src="../../../assets/registrarIngreso.jpg">
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header class="avatar">
+      <ion-chip color="danger">
+          <ion-icon name="person-circle-outline"></ion-icon>
+          <ion-label>{{nombreUsuario}}</ion-label>
+      </ion-chip>
+    </ion-card-header>
+    <ion-card-title class="titulo">
+      Ayúdanos a recolectar datos<br/>
+      tu, registro es muy importante para <br/>
+      la Universidad.<br/>
+    </ion-card-title>
+    <br/>
+    <ion-card-subtitle class="subtitulo">
+      Tú información nos permite actuar frente al coronavirus.
+    </ion-card-subtitle>
+    <br/>
+    <br/>
+    <ion-item>
+      <ion-label position="floating">Temperatura:</ion-label>
+      <ion-input value="36" clearInput type="tel" class="temperatura"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Oxigenación:</ion-label>
+      <ion-input value="99" clearInput type="tel" class="temperatura"></ion-input>
+    </ion-item>
+    <br/>
+    <br/>
+    <ion-item>
+      <ion-button color="danger" class="avatar" shape="round">
+        <ion-icon name="qr-code-outline"></ion-icon>
+        <ion-label>
+          &nbsp; &nbsp;
+          Leer código QR &nbsp;
+        </ion-label>
+      </ion-button>
+      <br/>
+      <br/>
+      <br/>
+    </ion-item>
+      
+  </ion-card>
+</ion-content>
+

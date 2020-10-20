@@ -1,0 +1,13 @@
+{
+  "appId": "com.appin.app",
+  "appName": "appin",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "cordova": {}
+}
