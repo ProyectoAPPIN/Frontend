@@ -18,6 +18,9 @@ import { environment } from 'src/environments/environment';
 
 import { FCM } from '@capacitor-community/fcm'
 import { NotificacionesService } from './services/notificaciones.service';
+
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+
 //import { HTTP } from '@ionic-native/http/ngx';
 
 @NgModule({
@@ -39,6 +42,7 @@ import { NotificacionesService } from './services/notificaciones.service';
     StatusBar,
     SplashScreen,
     NotificacionesService,
+    BarcodeScanner,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

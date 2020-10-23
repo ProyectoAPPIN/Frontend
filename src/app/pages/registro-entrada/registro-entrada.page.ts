@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Constantes } from 'src/app/utils/constantes.util';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+
+
 
 @Component({
   selector: 'app-registro-entrada',
@@ -8,11 +11,11 @@ import { Constantes } from 'src/app/utils/constantes.util';
 })
 export class RegistroEntradaPage implements OnInit {
 
-  public data: any;
+  data: any;
   nombreUsuario;
+  barcodeData: any;
 
-
-  constructor() { }
+  constructor( private barcodeScanner: BarcodeScanner ) { }
 
   ngOnInit() {
     this.ingresarRegistro();
@@ -23,6 +26,15 @@ export class RegistroEntradaPage implements OnInit {
     this.nombreUsuario = this.data.nombres;
     console.log(this.data);
     console.log('nombre', this.nombreUsuario);
+  }
+  qrParaIngresar(){
+    this.data = null;
+    this.barcodeScanner.scan().then(barcodeData => {
+      console.log('Barcode data', barcodeData);
+      this.data = barcodeData;
+    }).catch(err => {
+      console.log('Error', err);
+    });
   }
 
 }
