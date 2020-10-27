@@ -27,6 +27,10 @@ const routes: Routes = [
     path: 'politica',
     loadChildren: () => import('./pages/politica-tratamiento-datos/politica-tratamiento-datos.module').then( m => m.PoliticaTratamientoDatosPageModule)
   },
+  {
+    path: 'inicio',
+    loadChildren: () => import('./pages/inicio/inicio.module').then( m => m.InicioPageModule)
+  },
 
 
 ];

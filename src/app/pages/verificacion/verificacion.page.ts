@@ -24,7 +24,12 @@ export class VerificacionPage implements OnInit {
     codigoActivacion: "",
     activo: false
   };
-
+  codigoVerificacionre: any = {
+    codUsuario: "",
+    codigoActivacion: "",
+    activo: false
+  };
+  activo;
   codigoActivacion;
   codUsuario;
 
@@ -56,7 +61,7 @@ export class VerificacionPage implements OnInit {
     this.codigoVerificacion.codUsuario = this.codUsuario;
     this.codigoVerificacion.codigoActivacion = codigo;
 
-    console.log(this.codigoVerificacion);
+    //console.log(this.codigoVerificacion);
     
     this.verificacioncodService.validarCod(this.codigoVerificacion).pipe(
       finalize(() => {
@@ -82,7 +87,7 @@ export class VerificacionPage implements OnInit {
 
     await alert.present();
   }
-
+//alerta de confirmacion
   async presentAlertConfirmacion(mensaje: string) {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
@@ -102,4 +107,40 @@ export class VerificacionPage implements OnInit {
     await alert.present();
   }
 
+//alerta de reenvio de codigo de verificación
+async presentAlertConfirmacionreenviocod(mensaje: string) {
+  const alert = await this.alertController.create({
+    cssClass: 'my-custom-class',
+    header: 'Confirmación',
+    subHeader: 'Usuario Activo',
+    message: mensaje,
+    buttons: [
+      {
+        text: 'Ok',
+        handler: () => {          
+        }
+      }
+    ]
+  });
+
+  await alert.present();
 }
+
+  reenviarCod(){
+    // //armo el objeto para enviar al servicio    
+    this.codigoVerificacionre.codUsuario = this.codUsuario;
+    //console.log(this.codigoVerificacionre);
+    
+    this.verificacioncodService.reenviarCod(this.codigoVerificacionre).pipe(
+      finalize(() => {
+        console.log('Servicio validar codigo completado correctamente');
+      })).subscribe(resp => {
+        this.respuesta = resp
+        console.log(this.respuesta);
+        if (this.respuesta[0].codigoActivacion != "-1") {
+          this.presentAlertConfirmacionreenviocod('Se reenvio el codigo de verificación a tu correo electrónico, debe ingresarlo nuevamente para continuar el proceso');
+        }           
+      });
+  }
+}
+

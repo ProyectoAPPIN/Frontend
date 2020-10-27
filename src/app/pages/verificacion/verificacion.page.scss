@@ -1,0 +1,18 @@
+ion-content{
+    --ion-background-color:#f3f3f3;
+  }
+ion-item {
+    position: relative;
+    right: -3rem;
+    width: 150%;
+    height: 150%;
+    background-color:black;
+    border-radius: 15px;
+}
+ion-input{
+  border: black;
+  font-size: 25px;
+}
+ion-alert{
+  background-color: red;
+}

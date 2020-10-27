@@ -2,29 +2,31 @@
   <img src="../../../assets/bannerVerificacion.jpg"/>
 </ion-header>
 <ion-content>
-  <ion-card style="background-image: url(assets/fondo.jpg);" >
+  <!-- style="background-image: url(assets/fondo.jpg);" -->
     <ion-card-header class="ion-text-center" >
-      <br><br><br><br><br><br><br><br><br><br><br>
-      <ion-card-title style="color: aliceblue;">CÓDIGO DE VERIFICACIÓN</ion-card-title>
+      <br><br><br><br><br><br><br>
+      <ion-card-title style="color:black;"><b>Código de verificación</b></ion-card-title>
       
       <br>
-        <ion-item class="ion-item ion-text-center">
+        <ion-item style="width: 15rem;text-align: center;">
           <ion-input  mask="0-0-0-0" [(ngModel)]="codigoActivacion"></ion-input>
+          
         </ion-item>
 
-
+        <div>__________________________</div>
+        <br>
         <!-- <ion-button color="danger"   (click)="enviarDatos(usuarioForm.value)" expand="block">Registro</ion-button> -->
-
+        <br><br>
         <ion-button class="boton_personalizado" padding="" color="danger" class="ion-text-center" (click)="enviarCodigo()"><p>continuar</p></ion-button>
-        <ion-button color="danger" class="ion-text-center">Reenviar código</ion-button>
+        <br><br>
+        
+        <ion-router-link color="danger" (click)="reenviarCod()" ><b>Reenviar código</b></ion-router-link>
 
         <!-- <ion-col>
           <ion-router-link href="" class="underline">Reenviar código</ion-router-link>
         </ion-col> -->
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br>
     </ion-card-header>
-  </ion-card>
-
 </ion-content>
 {{codigoActivacion|json}}
 {{codUsuario|json}}

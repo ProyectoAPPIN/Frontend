@@ -1,15 +1,27 @@
 ion-item {
     position: relative;
     right: -2rem;
+    background-color:black;
+    border-radius: 15px;
+    font-size: 18px;
 }
 ion-loading {
     color: green;
   }
   
   /* Works - pass "my-custom-class" in cssClass to increase specificity */
+  .div-recordar{
+    text-decoration-color: green;
+  }
   .my-custom-class {
     --background: #222;
     --spinner-color: #fff;
-  
-    color: #fff;
+      color: #fff;
+      border-radius: 20px;
+      font-family: Helvetica;
+      border-bottom: #f53d3d;
   }
+ion-content{
+  --ion-background-color:#f3f3f3;
+}
+

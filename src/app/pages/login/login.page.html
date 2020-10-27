@@ -4,13 +4,14 @@
     <img src="../../../assets/Banner_login.jpg"/>    
   </ion-toolbar>
 </ion-header>
-<br><br><br><br>
+
 <ion-content class="ion-text-center" style="width: 100%;">  
-  <ion-card>
+  <ion-card style="width: 100%; height: 100%;">
     <ion-card-content class="ion-text-center">
+      <br><br>
       <ion-list>
         <ion-item style="width: 15rem;">
-          <ion-label>Institución</ion-label>
+          <ion-label><b>Institución</b></ion-label>
           <ion-select value="u1" style="text-align: center;" okText="Listo" [(ngModel)]="universidad"
             cancelText="Cancelar">
             <ion-select-option *ngFor="let institucion of instituciones" [value]="institucion.codInstitucion">
@@ -18,8 +19,9 @@
             </ion-select-option>
           </ion-select>
         </ion-item>
+        <br>
         <ion-item style="width: 15rem;">
-          <ion-label>Tipo de Documento</ion-label>
+          <ion-label><b>Tipo de Documento</b></ion-label>
           <ion-select value="td1" style="text-align: center;" okText="Listo" [(ngModel)]="tipoDocumento"
             cancelText="Cancelar">
             <ion-select-option *ngFor="let tipo of tipoDocumentos" [value]="tipo.nomenclatura">
@@ -27,23 +29,24 @@
             </ion-select-option>
           </ion-select>
         </ion-item>
-        <ion-item style="width: 15rem;">
-          <ion-label position="floating">Número de documento</ion-label>
-          <ion-input [(ngModel)]="numeroDocumento"></ion-input>
-        </ion-item>
         <br>
+        <ion-item style="width: 15rem;">
+          <ion-label position="floating" ><b>Número de documento</b></ion-label>
+          <ion-input  [(ngModel)]="numeroDocumento"></ion-input>
+        </ion-item>
+        <br><br>
         <ion-checkbox color="danger" checked="true"></ion-checkbox>
         <div>Recordar mis datos</div>
-        <br><br>
+        <br>
         <ion-button color="danger" class="ion-text-center" (click)="validarIngreso()">Ingresar</ion-button>
         <br><br>
-        <ion-router-link color="danger" routerLink="/registro">Registrarse.</ion-router-link>
+        <ion-router-link color="danger" routerLink="/registro"><b>Registrarse.</b></ion-router-link>
         <br>
         <div>_________________________________</div> 
         <br>       
           <ion-label>
             <ion-router-link color="danger" routerLink="/politica">
-            Politica de tratamiento de datos..
+              <b>Politica de tratamiento de datos.</b>
           </ion-router-link>
         </ion-label>    
       </ion-list>      

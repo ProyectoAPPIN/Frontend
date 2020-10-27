@@ -1,0 +1,28 @@
+ion-content{
+    --ion-background-color:#f3f3f3;
+    
+  }
+  ion-back-button{
+      width: 15px;
+      height: 15px;
+  }
+  form{
+      border-radius: 15px;
+      font-size: 17px;
+  }
+  .my-custom-class {
+    font-family: Helvetica;
+    --background: #222;
+    --spinner-color: #fff;
+    border-radius: 50px;
+    
+     color: #fff;
+  }
+.alert-danger{
+border-radius: 15px;
+background-color:#f53d3d;
+text-align: center;
+}
+.container-error-message{
+  text-decoration-color: rgb(250, 245, 250);
+}

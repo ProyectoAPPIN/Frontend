@@ -1,7 +1,8 @@
 <ion-header class="ion-text-center">  
   <img src="../../../assets/Banner.jpg"/>
 </ion-header>
-<ion-content class="fondo">    
+<ion-content>    
+  <ion-back-button defaultHref="/login">salir</ion-back-button>
   <form novalidate [formGroup]="usuarioForm">      
   <ion-item >
     <ion-label style="font-family:  Helvetica; " >Tipo de Documento</ion-label>
@@ -24,6 +25,7 @@
     <ion-label position="floating" style="font-family:  Helvetica;">Nombres</ion-label>
     <ion-input mask="(000-000)" formControlName="nombres" (keyup)="applyFilter($event)"></ion-input>
   </ion-item>
+  
 
   <ion-item>
     <ion-label position="floating" style="font-family:  Helvetica; ">Apellidos</ion-label>
@@ -36,6 +38,7 @@
   </ion-item>
 
   <ion-item >
+    
     <ion-label style="font-family:  Helvetica;">Institución</ion-label>
       <ion-select value="u1" okText="Listo" cancelText="Cancelar" formControlName="codInstitucion">
         <ion-select-option *ngFor="let institucion of listaUniversidades" [value]="institucion.codInstitucion">
@@ -56,11 +59,11 @@
   <ion-item>
     <ion-label position="floating" style="font-family:  Helvetica;">Correo electronico</ion-label>
     <ion-input formControlName="correo" ></ion-input>
-  </ion-item>    
+  </ion-item>   
   <div class="alert-danger" *ngIf="email.invalid && (email.dirty || email.touched)">
     <div class="container-error-message" *ngIf="email.errors.required">
-      Email is required
-    </div>      
+      Correo electrónico es requerido
+    </div>  
     <div class="container-error-message"
       *ngIf="(email.dirty || email.touched) && email.invalid && email.errors.pattern">
       Debe ingresar un correo valido.

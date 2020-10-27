@@ -35,6 +35,7 @@ export class LoginPage implements OnInit {
   universidad;
   numeroDocumento;
   mensajeError;
+  ingresoActivo;
 
   constructor(
     private loginService: LoginService,
@@ -51,7 +52,7 @@ export class LoginPage implements OnInit {
   }
 
   //alerta usuaio activo
-  async presentAlertUsuarioActivo() {
+  async presentAlertUsuarioActivo(router:string) {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Bienvenido a nuestra aplicación APPIN',
@@ -60,7 +61,12 @@ export class LoginPage implements OnInit {
         {
           text: 'Ok',
           handler: () => {
-            this.route.navigate(['registro-entrada']);
+            if(router == '1'){
+              this.route.navigate(['registro-entrada']);
+            }else{
+              this.route.navigate(['inicio']);
+            }
+            
           }
         }
       ]
@@ -175,13 +181,24 @@ export class LoginPage implements OnInit {
         )).subscribe(resp => {
           this.usuario = resp;
           console.log(this.usuario)
-          if (this.usuario[0].activo === true) {
+          /* Si el usuario esta activo pero no tiene ingreso a la sede */
+          if (this.usuario[0].activo === true && this.usuario[0].ingresoActivo === "0") {
+            alert('entro');
             sessionStorage.setItem(Constantes.DATOS_SESION_USUARIO, JSON.stringify(this.usuario[0]));
-            /* Si el usuario esta activo lo direcciono a la ruta donde debe navegar la aplicacion */
-            this.presentAlertUsuarioActivo();
-          } else {
+            let opcionRouter = "1";            
+            this.presentAlertUsuarioActivo(opcionRouter);
+          } 
+          /* Si el usuario esta activo pero si tiene ingreso a la sede */
+          if (this.usuario[0].activo === true && this.usuario[0].ingresoActivo === "1") {
+            sessionStorage.setItem(Constantes.DATOS_SESION_USUARIO, JSON.stringify(this.usuario[0]));
+            let opcionRouter = "2";
+            this.presentAlertUsuarioActivo(opcionRouter);
+          }  
+          /* el usuario no esta activo lo dirreciono a la opcion de registro*/
+          if(this.usuario[0].activo === false){
             this.presentAlertUsuarioInActivo();
-          }
+          }         
+          
         });
     }
   }

@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { finalize } from 'rxjs/operators';
 
 
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 
 import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
@@ -63,7 +63,7 @@ export class RegistroPage implements OnInit {
     correo: 'AA@gmail.com',
     sexo: true,
     activo: false,
-    token: ''
+    token: 'xx'
   };
 
   constructor(
@@ -72,7 +72,10 @@ export class RegistroPage implements OnInit {
     private formBuilder: FormBuilder,
     private route: Router,
     public alertController: AlertController,
-    private firestore: AngularFirestore
+    public toastController: ToastController,
+    private firestore: AngularFirestore,
+    public loadingController: LoadingController
+
   ) { }
 
   async presentAlert(mensaje: string, codUsuario: string) {
@@ -94,8 +97,8 @@ export class RegistroPage implements OnInit {
 
   get email() { return this.usuarioForm.get('correo'); }
   get documento() { return this.usuarioForm.get('numeroDocumento'); }
+  
   //prueba se define objetos
-
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   public usuarioForm = new FormGroup({
@@ -115,17 +118,27 @@ export class RegistroPage implements OnInit {
 
 
   ngOnInit() {
+    this.presentLoadingInicioregistro();
     this.obtenerTokenDispositivo();
     this.obtenerTipoDocumento();
     this.obtenerUniversidades();
     this.obtenerPerfiles();
   }
-
+   //loading de cargue de aplicacion
+  async presentLoadingInicioregistro() {
+    const loading = await this.loadingController.create({
+      duration: 500
+    });
+    await loading.present();
+    const { role, data } = await loading.onDidDismiss();
+  }
   enviarDatos(form: Datos) {
+    alert(this.usuarioForm1.token);
     if (this.usuarioForm1.token == "") {
       this.obtenerTokenDispositivo();
     } else {
       //alert('Entro')
+      this.presentLoadingInicioregistro();
       this.usuarioForm1.codUsuario = "-1";
       this.usuarioForm1.nombres = form.nombres;
       this.usuarioForm1.apellidos = form.apellidos;
