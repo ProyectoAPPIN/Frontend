@@ -2,7 +2,11 @@
   <img src="../../../assets/Banner.jpg"/>
 </ion-header>
 <ion-content>    
-  <ion-back-button defaultHref="/login">salir</ion-back-button>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" >
+    <ion-fab-button color="danger" href="/login">
+      <ion-icon name="arrow-undo-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
   <form novalidate [formGroup]="usuarioForm">      
   <ion-item >
     <ion-label style="font-family:  Helvetica; " >Tipo de Documento</ion-label>
@@ -12,7 +16,7 @@
       </ion-select-option>
     </ion-select>
   </ion-item>
-  
+
   <ion-item> 
     <ion-label position="floating" style="font-family:  Helvetica; ">Número de documento</ion-label>
     <ion-input  (ionBlur)="obtenerUsuario()" formControlName="numeroDocumento"></ion-input>

@@ -183,7 +183,6 @@ export class LoginPage implements OnInit {
           console.log(this.usuario)
           /* Si el usuario esta activo pero no tiene ingreso a la sede */
           if (this.usuario[0].activo === true && this.usuario[0].ingresoActivo === "0") {
-            alert('entro');
             sessionStorage.setItem(Constantes.DATOS_SESION_USUARIO, JSON.stringify(this.usuario[0]));
             let opcionRouter = "1";            
             this.presentAlertUsuarioActivo(opcionRouter);

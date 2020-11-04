@@ -3,7 +3,19 @@ ion-content{
     background-color: red;
     
 }
-p {
-    border: red 2px solid;
-    margin: 0;
+ion-slides {
+    height: 100%;
+    --bullet-background: white;
+    --bullet-background-active:white;
 }
+// estilos de slider
+.slide-img{
+    text-decoration-color: red;
+}
+.slide-img-padding{
+    text-decoration: red;
+}
+.ion-fab button{
+    background-color: red;
+}
+
