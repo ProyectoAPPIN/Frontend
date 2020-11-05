@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { RegistroEntradaPageRoutingModule } from './registro-entrada-routing.module';
 
 import { RegistroEntradaPage } from './registro-entrada.page';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 
 @NgModule({
   imports: [
@@ -15,6 +16,10 @@ import { RegistroEntradaPage } from './registro-entrada.page';
     IonicModule,
     RegistroEntradaPageRoutingModule
   ],
+  providers:  [
+    BarcodeScanner,
+  ],
   declarations: [RegistroEntradaPage]
 })
 export class RegistroEntradaPageModule {}
+

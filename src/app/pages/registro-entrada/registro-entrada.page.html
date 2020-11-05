@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-      <img src="../../../assets/registrarLavadoManos.jpg">
+      <img src="../../../assets/registrarIngreso.jpg">
   </ion-toolbar>
 </ion-header>
 
@@ -25,16 +25,16 @@
     <br/>
     <ion-item>
       <ion-label position="floating">Temperatura:</ion-label>
-      <ion-input value="36" clearInput type="tel" class="temperatura"></ion-input>
+      <ion-input value="36" clearInput type="tel" [(ngModel)]="datosEntrada.temperatura" class="temperatura"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Oxigenación:</ion-label>
-      <ion-input value="99" clearInput type="tel" class="temperatura"></ion-input>
+      <ion-input value="99" clearInput type="tel" [(ngModel)]="datosEntrada.oxigenacion" class="temperatura"></ion-input>
     </ion-item>
     <br/>
     <br/>
     <ion-item>
-      <ion-button color="danger" class="avatar" shape="round" (click)="qrParaIngresar()">
+      <ion-button color="danger" class="avatar" shape="round" (click)="LeerCode()">
         <ion-icon name="qr-code-outline"></ion-icon>
         <ion-label>
           &nbsp; &nbsp;
@@ -45,7 +45,15 @@
       <br/>
       <br/>
     </ion-item>
+    <!-- <ion-item>
+      <ion-button (click)="registroEntrada()">
+        <ion-label>
+          Ensayo
+        </ion-label>
+      </ion-button>
+    </ion-item> -->
       
   </ion-card>
+  <!-- {{datosEntrada | json}} -->
+ 
 </ion-content>
-

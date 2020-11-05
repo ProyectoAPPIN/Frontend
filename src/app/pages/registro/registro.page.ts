@@ -133,7 +133,7 @@ export class RegistroPage implements OnInit {
     const { role, data } = await loading.onDidDismiss();
   }
   enviarDatos(form: Datos) {
-    alert(this.usuarioForm1.token);
+    //alert(this.usuarioForm1.token);
     if (this.usuarioForm1.token == "") {
       this.obtenerTokenDispositivo();
     } else {
