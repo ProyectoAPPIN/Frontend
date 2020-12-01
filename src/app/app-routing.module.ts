@@ -28,9 +28,27 @@ const routes: Routes = [
     loadChildren: () => import('./pages/politica-tratamiento-datos/politica-tratamiento-datos.module').then( m => m.PoliticaTratamientoDatosPageModule)
   },
   {
-    path: 'inicio',
-    loadChildren: () => import('./pages/inicio/inicio.module').then( m => m.InicioPageModule)
+    path: 'registrar-sintomas',
+    loadChildren: () => import('./pages/registrar-sintomas/registrar-sintomas.module').then( m => m.RegistrarSintomasPageModule)
   },
+  {
+    path: 'pagina-inicio',
+    loadChildren: () => import('./pages/pagina-inicio/pagina-inicio.module').then( m => m.PaginaInicioPageModule)
+  },
+  {
+    path: 'registrar-lavado',
+    loadChildren: () => import('./pages/registrar-lavado/registrar-lavado.module').then( m => m.RegistrarLavadoPageModule)
+  },
+  {
+    path: 'cuidados',
+    loadChildren: () => import('./pages/cuidados/cuidados.module').then( m => m.CuidadosPageModule)
+  },  {
+    path: 'alertas',
+    loadChildren: () => import('./pages/alertas/alertas.module').then( m => m.AlertasPageModule)
+  },
+
+
+
 
 
 ];

@@ -6,11 +6,13 @@
 </ion-header>
 
 <ion-content class="ion-text-center" style="width: 100%;">  
-  <ion-card style="width: 100%; height: 100%;">
-    <ion-card-content class="ion-text-center">
+  <ion-card style="max-width: 95%; height: 100%;">
+    <ion-card-content class="contentCard">
       <br><br>
+      
       <ion-list>
-        <ion-item style="width: 15rem;">
+        <div class="contentCard">
+        <ion-item style="max-width: 80%;">
           <ion-label><b>Institución</b></ion-label>
           <ion-select value="u1" style="text-align: center;" okText="Listo" [(ngModel)]="universidad"
             cancelText="Cancelar">
@@ -20,7 +22,7 @@
           </ion-select>
         </ion-item>
         <br>
-        <ion-item style="width: 15rem;">
+        <ion-item style="max-width: 80%;">
           <ion-label><b>Tipo de Documento</b></ion-label>
           <ion-select value="td1" style="text-align: center;" okText="Listo" [(ngModel)]="tipoDocumento"
             cancelText="Cancelar">
@@ -30,10 +32,11 @@
           </ion-select>
         </ion-item>
         <br>
-        <ion-item style="width: 15rem;">
+        <ion-item style="max-width: 80%;">
           <ion-label position="floating" ><b>Número de documento</b></ion-label>
           <ion-input  [(ngModel)]="numeroDocumento"></ion-input>
         </ion-item>
+      </div>
         <br><br>
         <ion-checkbox color="danger" checked="true"></ion-checkbox>
         <div>Recordar mis datos</div>
