@@ -152,3 +152,4 @@ export class RegistrarSintomasPage implements OnInit {
     });
   }
 }
+//Ultimo avance 13-01-2021
