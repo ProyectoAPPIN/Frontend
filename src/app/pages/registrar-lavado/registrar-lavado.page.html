@@ -1,9 +1,55 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>registrar-lavado</ion-title>
+    <img src="../../../assets/registrarLavadoManos.jpg">
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-card>
+      <ion-card-header class="avatar ion-text-center">        
+            <ion-label>Registro de lavado de manos</ion-label><br>
+            <h3><b>{{nombreUsuario}}</b></h3>   
+            <ion-label >Tu información nos permite actuar frente al coronavirus</ion-label>
+      </ion-card-header>
+  </ion-card>
+  
+  <ion-card>
+    <ion-card-header>
+        <img src="../../../assets/lavadoManos.svg" class="lavadoManos">
+      </ion-card-header>
+        <ion-card>
+        <ion-card-header>
+            <ion-item>
+              <ion-button color="danger" class="avatar" shape="round" (click)="LeerCode()">
+                <ion-icon name="qr-code-outline"></ion-icon>
+                  <ion-label>
+                  &nbsp; &nbsp;
+                  Leer código QR &nbsp;
+                  </ion-label>
+              </ion-button>
+            </ion-item>
+          </ion-card-header>
+      </ion-card>
+  </ion-card>
 
+
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button tab="schedule" color="danger" routerLink="/registrar-sintomas">
+        <ion-icon name="thermometer-outline" color="danger"></ion-icon>
+        <ion-label>Sintomas</ion-label>
+        <ion-badge color="danger">39°</ion-badge>
+      </ion-tab-button>
+  
+      <ion-tab-button tab="speakers" routerLink="/pagina-inicio">
+        <ion-icon name="home-outline" color="danger"></ion-icon>
+        <ion-label>Inicio</ion-label>
+      </ion-tab-button>
+  
+      <ion-tab-button tab="map" routerLink="/cuidados">
+        <ion-icon name="accessibility-outline" color="danger"></ion-icon>
+        <ion-label >Cuidados</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
 </ion-content>

@@ -16,27 +16,40 @@ export class AlertasPage implements OnInit {
   nombreUsuario;
   codUsuario;
   LavadoNotificacionesService: any;
-  notificaciones:any=[];  
-  
+  notificaciones: any = [];
+  mostrar:boolean;
+
 
   constructor(
     public loadingController: LoadingController,
     public alertController: AlertController,
     private loginService: LavadonotificacionesService,
     private route: Router,
-    
+
   ) { }
 
   ngOnInit() {
     this.data = JSON.parse(sessionStorage.getItem(Constantes.DATOS_SESION_USUARIO));
     this.nombreUsuario = this.data.nombres;
-    this.codUsuario;
-    this.data.codUsuario;
-    this.presentLoadingAlertas();
-    this.obtenerNotificacionAlertas(this.data.codUsuario);
-    this.presentLoadingInicio;
+    this.codUsuario = this.data.codUsuario;
+    // this.presentLoadingAlertas();
+    // this.presentLoadingAlertasVacio();
+    this.obtenerNotificacionAlertas();
+    // this.presentLoadingInicio();
   }
-  
+
+  async presentLoadingAlertasVacio() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: '!No existen notificaciones de lavado, pero tu registro es muy importante para nosotros,',
+      message: 'Si deseas realizarla acercate al lavamanos mas cercano!',
+      buttons: ['OK']
+    });
+
+    await alert.present();
+
+  }
+
   async presentLoadingInicio() {
     const loading = await this.loadingController.create({
       duration: 500
@@ -46,8 +59,9 @@ export class AlertasPage implements OnInit {
   }
 
   /*Metodo para cargar las notificaciones*/
-  obtenerNotificacionAlertas(usuarioCod:string) {
-    this.loginService.notificacionesUsuario(usuarioCod).pipe(
+  obtenerNotificacionAlertas() {
+    //alert(this.codUsuario);
+    this.loginService.notificacionesUsuario(this.codUsuario).pipe(
       finalize(() => {
         console.log('Servicio completado correctamente');
         setTimeout(() => {
@@ -55,8 +69,15 @@ export class AlertasPage implements OnInit {
         }, 500);
       }
       )).subscribe(resp => {
-        this.notificaciones = resp;
-        console.log(this.notificaciones);
+        this.notificaciones = resp;       
+        if (this.notificaciones.length > 1) {
+          this.mostrar = true;
+        // this.presentLoadingAlertasVacio()
+        }else{
+          // alert("d");
+          this.mostrar = false;
+          this.presentLoadingAlertasVacio()
+        }
       });
   }
 
@@ -68,34 +89,10 @@ export class AlertasPage implements OnInit {
     await loading.present();
     const { role, data } = await loading.onDidDismiss();
   }
-  
-  IngresarLavado(codigoNoti: string){
-    alert(codigoNoti);
+
+  IngresarLavado(codigoNoti: string) {
+    alert("ingreso");
     //this.route.navigate(['registro-entrada', codigoNoti]);
+    this.route.navigate(['registrar-lavado/' + `${codigoNoti}`]);
   }
-
-
-    //alerta usuaio activo
-    // async presentAlertUsuarioActivo(router:string) {
-    //   const alert = await this.alertController.create({
-    //     cssClass: 'my-custom-class',
-    //     header: 'Bienvenido a nuestra aplicación APPIN',
-    //     message: '"Tu aporte es muy importante para nosotros, nos ayudas a combatir el COVID"',
-    //     buttons: [
-    //       {
-    //         text: 'Ok',
-    //         handler: () => {
-    //           if(router == '1'){
-    //             this.route.navigate(['registro-entrada']);
-    //           }else{
-    //             this.route.navigate(['inicio']);
-    //           }
-              
-    //         }
-    //       }
-    //     ]
-    //   });
-    //   await alert.present();
-    // }
-
 }

@@ -1,0 +1,39 @@
+.borderColor {
+    border-bottom-style: groove;    
+    border-radius:10px;
+    border-width: 5px;
+    border-color:#f53d3d;
+}
+input[type=checkbox]{
+    display:block;
+    margin:0.2em;
+}
+input[type=checkbox]{
+    display:none;
+}
+input[type=checkbox] {
+    content:"\2714";
+    border:0.1em solid #000;
+    border-radius:0.2em;
+    display:inline;
+    width:1em;
+    height:1em;
+    padding-left:0.2em;
+    padding-bottom:0.3em;
+    margin-right:0.2em;
+    vertical-align:bottom;
+    color:transparent;
+    transition:2s;
+}
+
+input[type=checkbox]{
+    transform:scale(1);
+    background-color: #bfb;
+    border-color: #bfb;
+}
+
+input[type-checkbox]:checked{
+    background-color:mediumvioletred;
+    border-color:mediumblue;
+    color:#fff;
+}

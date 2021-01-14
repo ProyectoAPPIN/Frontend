@@ -42,7 +42,8 @@ const routes: Routes = [
   {
     path: 'cuidados',
     loadChildren: () => import('./pages/cuidados/cuidados.module').then( m => m.CuidadosPageModule)
-  },  {
+  },
+  {
     path: 'alertas',
     loadChildren: () => import('./pages/alertas/alertas.module').then( m => m.AlertasPageModule)
   },
