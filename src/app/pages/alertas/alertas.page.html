@@ -1,66 +1,59 @@
 <ion-header>
   <ion-toolbar>
-    <img src="../../../assets/Banner_Alertas.jpg"/>    
+    <img src="../../../assets/Banner_Alertas.jpg" />
   </ion-toolbar>
 </ion-header>
 
-<ion-content> 
-<div *ngIf="mostrar">
-  <ion-card>
-      <div *ngFor="let noti of notificaciones" class="ion-text-center" expand="block">
+<ion-content>
+  <ion-card *ngIf="mostrar">
+    <ion-item *ngFor="let noti of notificaciones" class="ion-text-center" expand="block">
+      <div>
         <div>
-          <div>    
-              <ion-card [ngStyle]="{'background-color': noti.fechaCierre != null ? '#C1C0B8' :  '#FC0404' }" expand="block" class="ion-text-center" style="max-height: 80px;">
-                <ion-card-content class="ion-text-center" >
-                  <ion-button expand="block" color="dawhitenger" class="ion-text-center"  
-                  [disabled]="noti.fechaCierre != null"
-                  (click)="IngresarLavado(noti.codRegistro)">
-                  <b>Fecha de lavado:
-                  {{noti.fecha | date : 'dd/MM/yyyy'}}<br><br> Hora de lavado:{{noti.hora}}</b></ion-button>
-              </ion-card-content>
-                      <ion-card>
-        <ion-card-header>
-            <ion-item>
-              <ion-button color="danger" class="avatar" shape="round" (click)="LeerCode()">
-                <ion-icon name="qr-code-outline"></ion-icon>
-                  <ion-label>
-                  &nbsp; &nbsp;
-                  Leer código QR &nbsp;
-                  </ion-label>
+          <ion-card [ngStyle]="{'background-color': noti.fechaCierre != null ? '#C1C0B8' :  '#FC0404' }" expand="block"
+            class="ion-text-center" style="max-height: 80px;">
+            <ion-card-content class="ion-text-center">
+              <ion-button expand="block" color="dawhitenger" class="ion-text-center"
+                [disabled]="noti.fechaCierre != null" (click)="IngresarLavado(noti.codRegistro)">
+                <b>Fecha de lavado:
+                  {{noti.fecha | date : 'dd/MM/yyyy'}}<br><br> Hora de lavado:{{noti.hora}}</b>
               </ion-button>
-            </ion-item>
-          </ion-card-header>
-      </ion-card>
-              </ion-card>
-          </div>   
-        </div>    
-      </div> 
-    </ion-card>
-</div> 
-<ion-fab-button color="light" href="/pagina-inicio"  horizontal="end" slot="fixed">
-<ion-icon name="arrow-undo-outline"></ion-icon>
-</ion-fab-button>
-
-
-
-
-  <ion-tabs>
-    <ion-tab-bar slot="bottom">
-      <ion-tab-button tab="schedule" color="danger" routerLink="/registrar-sintomas">
-        <ion-icon name="thermometer-outline" color="danger"></ion-icon>
-        <ion-label>Sintomas</ion-label>
-        <ion-badge color="danger">39°</ion-badge>
-      </ion-tab-button>
-  
-      <ion-tab-button tab="speakers" routerLink="/pagina-inicio">
-        <ion-icon name="home-outline" color="danger"></ion-icon>
-        <ion-label>Inicio</ion-label>
-      </ion-tab-button>
-  
-      <ion-tab-button tab="map" routerLink="/cuidados">
-        <ion-icon name="accessibility-outline" color="danger"></ion-icon>
-        <ion-label >Cuidados</ion-label>
-      </ion-tab-button>
-    </ion-tab-bar>
-  </ion-tabs>
+            </ion-card-content>
+            <ion-card>
+              <ion-card-header>
+                <ion-item>
+                  <ion-button color="danger" class="avatar" shape="round" (click)="LeerCode()">
+                    <ion-icon name="qr-code-outline"></ion-icon>
+                    <ion-label>
+                      &nbsp; &nbsp;
+                      Leer código QR &nbsp;
+                    </ion-label>
+                  </ion-button>
+                </ion-item>
+              </ion-card-header>
+            </ion-card>
+          </ion-card>
+        </div>
+      </div>
+    </ion-item>
+  </ion-card>
 </ion-content>
+
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="schedule" color="danger" routerLink="/registrar-sintomas">
+      <ion-icon name="thermometer-outline" color="danger"></ion-icon>
+      <ion-label>Sintomas</ion-label>
+      <ion-badge color="danger">39°</ion-badge>
+    </ion-tab-button>
+
+    <ion-tab-button tab="speakers" routerLink="/pagina-inicio">
+      <ion-icon name="home-outline" color="danger"></ion-icon>
+      <ion-label>Inicio</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="map" routerLink="/cuidados">
+      <ion-icon name="accessibility-outline" color="danger"></ion-icon>
+      <ion-label>Cuidados</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
