@@ -4,6 +4,7 @@ import { RegistroEntradaService } from 'src/app/services/registro-entrada.servic
 import { UltimoLavadoService } from 'src/app/services/ultimo-lavado.service';
 import { VerificacionService } from 'src/app/services/verificacion.service';
 import { Constantes } from 'src/app/utils/constantes.util';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pagina-inicio',
@@ -17,7 +18,6 @@ export class PaginaInicioPage implements OnInit {
   nombreUsuario;
   codUsuario;
   barcode: string;
-  route: any;
   ultimoLavadoManos: any = [];
   fechaUltimoLavado;
   notificaciones:any=[];
@@ -27,7 +27,8 @@ export class PaginaInicioPage implements OnInit {
   constructor(
     private registroEntradaService: RegistroEntradaService,
     private verificacioncodService: VerificacionService,
-    private ultimoLavadoService: UltimoLavadoService
+    private ultimoLavadoService: UltimoLavadoService,
+    private route: Router,
   ) { }
 
   ngOnInit() {
@@ -46,7 +47,7 @@ export class PaginaInicioPage implements OnInit {
       )).subscribe(resp => {
         this.notificaciones = resp;
         console.log(this.notificaciones);
-         this.cantNotificaciones = this.notificaciones.length;
+        this.cantNotificaciones = this.notificaciones.length;
          //console.log(this.cantNotificaciones);
         
       }
@@ -77,4 +78,11 @@ export class PaginaInicioPage implements OnInit {
       );
   }
 
+  ingresarLavadoManos() {
+    alert("ingreso");
+    var codigoNoti = "-1";    
+    this.route.navigate(['registrar-lavado/' + `${codigoNoti}`]);
+  }
 }
+
+//se realiza cambios el 18-01-2021
