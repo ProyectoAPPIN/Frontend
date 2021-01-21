@@ -1,60 +1,69 @@
 <ion-header>
   <ion-toolbar>
-    <img src="../../../assets/Banner_Alertas.jpg" />
+    <img src="../../../assets/registrarLavadoManos.jpg">
   </ion-toolbar>
 </ion-header>
+<ion-content [scrollEvents]="true">
+  <ion-card *ngIf="mostrar" > 
+    <ion-card-header class="ion-text-center">
+      <h3>Notificaciones</h3>
+    </ion-card-header> 
 
-<ion-content>
-  <ion-card *ngIf="mostrar">
-    <ion-item *ngFor="let noti of notificaciones" class="ion-text-center" expand="block">
-      <div>
-        <div>
-          <ion-card [ngStyle]="{'background-color': noti.fechaCierre != null ? '#C1C0B8' :  '#FC0404' }" expand="block"
-            class="ion-text-center" style="max-height: 80px;">
-            <ion-card-content class="ion-text-center">
-              <ion-button expand="block" color="dawhitenger" class="ion-text-center"
-                [disabled]="noti.fechaCierre != null" (click)="IngresarLavado(noti.codRegistro)">
-                <b>Fecha de lavado:
-                  {{noti.fecha | date : 'dd/MM/yyyy'}}<br><br> Hora de lavado:{{noti.hora}}</b>
-              </ion-button>
-            </ion-card-content>
-            <ion-card>
-              <ion-card-header>
-                <ion-item>
-                  <ion-button color="danger" class="avatar" shape="round" (click)="LeerCode()">
-                    <ion-icon name="qr-code-outline"></ion-icon>
-                    <ion-label>
-                      &nbsp; &nbsp;
-                      Leer código QR &nbsp;
-                    </ion-label>
-                  </ion-button>
-                </ion-item>
-              </ion-card-header>
-            </ion-card>
-          </ion-card>
-        </div>
-      </div>
-    </ion-item>
+      <ion-card-content class="ion-text-justify">       
+        <div *ngFor="let noti of notificaciones" class="ion-text-center" expand="block">
+         
+              <ion-card [ngStyle]="{'background-color': noti.fechaCierre != null ? '#525151 ' :  '#FC0404' }" 
+                class="ion-text-center" style="max-height: 80px;">
+                <ion-card-content>                     
+                    <div>
+                      <ion-button  color="dawhitenger" class="ion-text-center"
+                      [disabled]="noti.fechaCierre != null" (click)="IngresarLavado(noti.codRegistro)"> 
+                      <br> 
+                      <div *ngIf="noti.fechaCierre == null">
+                        <b>Estado: Abierto&nbsp;<ion-icon name="calendar-outline"></ion-icon>&nbsp;
+                          {{noti.fecha | date : 'dd/MM/yyyy'}}</b><br> 
+                          <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <ion-icon style="font-size: 1.5em" name="alarm-outline"></ion-icon>&nbsp;{{noti.hora}}</b>  
+                         
+                      </div>                      
+                      <div *ngIf="noti.fechaCierre != null" style="color: white;"> 
+                        <b>Estado: Cerrado&nbsp;<ion-icon name="calendar-outline"></ion-icon>
+                        {{noti.fechaCierre | date : 'dd/MM/yyyy'}}</b><br>
+                        <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <ion-icon style="font-size: 1.5em" name="alarm-outline"></ion-icon>&nbsp;{{noti.horaCierre}}</b>                           
+                      </div>    
+                    </ion-button>
+                    </div>                  
+                </ion-card-content>       
+              </ion-card>           
+        </div>         
+      </ion-card-content>      
   </ion-card>
+  <ion-card>
+  <ion-card-header style="height: 5rem;">
+    <ion-tabs>
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button color="danger" (click)="ingresarPaginaRegistroSintomas()">
+          <ion-icon name="thermometer-outline" color="danger"></ion-icon>
+          <ion-label>Sintomas</ion-label>
+          <ion-badge color="danger">39°</ion-badge>
+        </ion-tab-button>
+    
+        <ion-tab-button (click)="ingresarPaginaInicio()">
+          <ion-icon name="home-outline" color="danger"></ion-icon>
+          <ion-label>Inicio</ion-label>
+        </ion-tab-button>
+    
+        <ion-tab-button (click)="ingresarPaginaCuidados()">
+          <ion-icon name="accessibility-outline" color="danger"></ion-icon>
+          <ion-label>Cuidados</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+    </ion-card-header>
+</ion-card>      
 </ion-content>
-
-<ion-tabs>
-  <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="schedule" color="danger" routerLink="/registrar-sintomas">
-      <ion-icon name="thermometer-outline" color="danger"></ion-icon>
-      <ion-label>Sintomas</ion-label>
-      <ion-badge color="danger">39°</ion-badge>
-    </ion-tab-button>
-
-    <ion-tab-button tab="speakers" routerLink="/pagina-inicio">
-      <ion-icon name="home-outline" color="danger"></ion-icon>
-      <ion-label>Inicio</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button tab="map" routerLink="/cuidados">
-      <ion-icon name="accessibility-outline" color="danger"></ion-icon>
-      <ion-label>Cuidados</ion-label>
-    </ion-tab-button>
-  </ion-tab-bar>
-</ion-tabs>
-<!--se realizan cambios 14-01-2021-->

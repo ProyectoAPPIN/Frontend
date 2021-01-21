@@ -64,7 +64,7 @@ export class LoginPage implements OnInit {
             if(router == '1'){
               this.route.navigate(['registro-entrada']);
             }else{
-              this.route.navigate(['inicio']);
+              this.route.navigate(['pagina-inicio']);
             }
             
           }
@@ -180,16 +180,18 @@ export class LoginPage implements OnInit {
         }
         )).subscribe(resp => {
           this.usuario = resp;
-          console.log(this.usuario)
+          //console.log(this.usuario)
           /* Si el usuario esta activo pero no tiene ingreso a la sede */
           if (this.usuario[0].activo === true && this.usuario[0].ingresoActivo === "0") {
             sessionStorage.setItem(Constantes.DATOS_SESION_USUARIO, JSON.stringify(this.usuario[0]));
+            sessionStorage.setItem(Constantes.DATOS_SESION_UNIVERSIDAD, JSON.stringify(this.universidad));
             let opcionRouter = "1";            
             this.presentAlertUsuarioActivo(opcionRouter);
           } 
           /* Si el usuario esta activo pero si tiene ingreso a la sede */
           if (this.usuario[0].activo === true && this.usuario[0].ingresoActivo === "1") {
             sessionStorage.setItem(Constantes.DATOS_SESION_USUARIO, JSON.stringify(this.usuario[0]));
+            sessionStorage.setItem(Constantes.DATOS_SESION_UNIVERSIDAD, JSON.stringify(this.universidad));
             let opcionRouter = "2";
             this.presentAlertUsuarioActivo(opcionRouter);
           }  

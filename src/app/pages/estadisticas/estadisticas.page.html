@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar>
+    <img src="../../../assets/registrarLavadoManos.jpg">
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card color="dark">
+      <ion-card-header class="ion-text-justify">       
+            <ion-label >Con el propósito de controlar la propagación de la epidemia de COVID-19 en Colombia,
+              el numero de aforo permitido en la sede es de:</ion-label>              
+      </ion-card-header>
+      <ion-card class="ion-text-center">
+        <ion-card-header>
+          <b><div style="color:green; font-size: medium;">{{totalAforo}}&nbsp;&nbsp;<ion-icon name="accessibility-outline"></ion-icon></div></b>
+          </ion-card-header>
+      </ion-card>
+  </ion-card>
+  
+  <ion-card color="dark" class="ion-text-center">
+    <ion-card-header >
+      Usuarios registrados
+      </ion-card-header>
+        <ion-card>
+        <ion-card-header>
+          <b><div style="color:red;font-size: medium;">{{totalOcupacion}}&nbsp;&nbsp;<ion-icon name="accessibility-outline"></ion-icon></div></b>
+          </ion-card-header>
+      </ion-card>
+  </ion-card>
+  <ion-card color="dark" class="ion-text-center">
+    <ion-card-header>
+      Porcentaje de ocupacion
+      </ion-card-header>
+        <ion-card>
+        <ion-card-header>
+          <b><div style="color:purple;font-size: medium;">{{porcentaje}}%</div></b>
+          </ion-card-header>
+      </ion-card>
+  </ion-card>
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button color="danger" (click)="ingresarPaginaRegistroSintomas()">
+        <ion-icon name="thermometer-outline" color="danger"></ion-icon>
+        <ion-label>Sintomas</ion-label>
+        <ion-badge color="danger">39°</ion-badge>
+      </ion-tab-button>
+  
+      <ion-tab-button  (click)="ingresarPaginaLavadoManos()">
+        <ion-icon name="hand-left-outline" color="danger"></ion-icon>
+        <ion-label>Lavado de manos</ion-label>
+      </ion-tab-button>
+  
+      <ion-tab-button  (click)="ingresarPaginaInicio()">
+        <ion-icon name="home-outline" color="danger"></ion-icon>
+        <ion-label>Inicio</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-content>
+
+

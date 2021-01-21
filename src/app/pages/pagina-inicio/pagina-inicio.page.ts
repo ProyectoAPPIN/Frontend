@@ -28,7 +28,7 @@ export class PaginaInicioPage implements OnInit {
     private registroEntradaService: RegistroEntradaService,
     private verificacioncodService: VerificacionService,
     private ultimoLavadoService: UltimoLavadoService,
-    private route: Router,
+    private route: Router
   ) { }
 
   ngOnInit() {
@@ -77,12 +77,20 @@ export class PaginaInicioPage implements OnInit {
       }
       );
   }
-
-  ingresarLavadoManos() {
-    alert("ingreso");
+  ingresarPaginaLavadoManos() {    
     var codigoNoti = "-1";    
     this.route.navigate(['registrar-lavado/' + `${codigoNoti}`]);
   }
+  ingresarPaginaRegistroSintomas(){
+    this.route.navigate(['/registrar-sintomas']);
+  }
+  ingresarPaginaCuidados(){
+    this.route.navigate(['/cuidados']);
+  }
+  ingresarPaginaEstadisticas(){
+    this.route.navigate(['/estadisticas']);
+  }
+  
 }
 
 //se realiza cambios el 18-01-2021

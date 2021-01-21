@@ -18,8 +18,8 @@ export class RegistroEntradaPage implements OnInit {
   data: any;
   nombreUsuario;
   codUsuario;
-  barcode: string;
-
+  //barcode: string;
+  barcode: any = [];
  
   respuesta: any = {
     codUsuario: "",
@@ -64,8 +64,11 @@ export class RegistroEntradaPage implements OnInit {
     this.barcodeScanner
       .scan()
       .then((barcodeData) => {
-        this.barcode = barcodeData['text'];
-        this.datosEntrada.codInstitucion = this.barcode;
+        // this.barcode = barcodeData['text'];
+        // this.datosEntrada.codInstitucion = this.barcode;
+        this.barcode = JSON.parse(barcodeData['text']);
+        var institucion = this.barcode[0]['codInstitucion'];  
+        this.datosEntrada.codInstitucion = institucion;
         this.registroEntrada();
       })
       .catch(err => {
@@ -109,12 +112,12 @@ export class RegistroEntradaPage implements OnInit {
   async presentAlertRegistroEntrada() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',      
-      message: '"Bienvenido a la sede cartago su registro fue exitoso "',
+      message: 'Su registro fue exitoso, Bienvenido a la universidad del valle',
       buttons: [
         {
           text: 'Ok',
           handler: () => {
-            this.route.navigate(['inicio']);
+            this.route.navigate(['pagina-inicio']);
           }
         }
       ]

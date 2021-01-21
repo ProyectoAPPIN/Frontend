@@ -28,7 +28,10 @@ export class AlertasPage implements OnInit {
 
   ) { }
 
+
+
   ngOnInit() {
+    
     this.data = JSON.parse(sessionStorage.getItem(Constantes.DATOS_SESION_USUARIO));
     this.nombreUsuario = this.data.nombres;
     this.codUsuario = this.data.codUsuario;
@@ -43,12 +46,36 @@ export class AlertasPage implements OnInit {
       cssClass: 'my-custom-class',
       header: '!No existen notificaciones de lavado, pero tu registro es muy importante para nosotros,',
       message: 'Si deseas realizarla acercate al lavamanos mas cercano!',
-      buttons: ['OK']
+      buttons: [
+        {
+          text: 'Ok',
+          handler: () => {            
+              this.route.navigate(['/cuidados']);          
+          }
+        }
+      ]
     });
 
     await alert.present();
 
   }
+
+  async presentAlertas(nombre:string) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: '' + `${nombre}`+ ' tiene las siguientes notificaciones de lavado !',
+      message: 'Acercate, al lavamanos mas cercano segun la fecha y hora establecida',
+      buttons: [
+        {
+          text: 'Ok'     
+        }
+      ]
+    });
+
+    await alert.present();
+
+  }
+
 
   async presentLoadingInicio() {
     const loading = await this.loadingController.create({
@@ -56,6 +83,23 @@ export class AlertasPage implements OnInit {
     });
     await loading.present();
     const { role, data } = await loading.onDidDismiss();
+  }
+
+  async presentAlertRegistroLavado(codigoNoti:string) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Las manos limpias salvan vidas, Tu aporte es muy importante para nosotros, nos ayudas a combatir el COVID',
+      message: '"Por favor acercate al lavamanos mas cercano y realiza el registro leyendo el codigo QR."',
+      buttons: [
+        {
+          text: 'Ok',
+          handler: () => {            
+              this.route.navigate(['registrar-lavado/' + `${codigoNoti}`]);          
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   /*Metodo para cargar las notificaciones*/
@@ -69,10 +113,11 @@ export class AlertasPage implements OnInit {
         }, 500);
       }
       )).subscribe(resp => {
-        this.notificaciones = resp;       
-        if (this.notificaciones.length > 1) {
-          this.mostrar = true;
-        // this.presentLoadingAlertasVacio()
+        this.notificaciones = resp; 
+        //console.log( this.notificaciones);      
+        if (this.notificaciones.length > 1) {          
+            this.mostrar = true;
+            this.presentAlertas(this.nombreUsuario);        
         }else{
           // alert("d");
           this.mostrar = false;
@@ -91,8 +136,20 @@ export class AlertasPage implements OnInit {
   }
 
   IngresarLavado(codigoNoti: string) {
-    alert("ingreso");
+    this.presentAlertRegistroLavado(codigoNoti);
+    //alert("ingreso");
     //this.route.navigate(['registro-entrada', codigoNoti]);
-    this.route.navigate(['registrar-lavado/' + `${codigoNoti}`]);
+    //this.route.navigate(['registrar-lavado/' + `${codigoNoti}`]);
+  }
+
+  ingresarPaginaCuidados() {  
+     
+    this.route.navigate(['/cuidados']);
+  }
+  ingresarPaginaRegistroSintomas(){
+    this.route.navigate(['/registrar-sintomas']);
+  }
+  ingresarPaginaInicio(){
+    this.route.navigate(['/pagina-inicio']);
   }
 }

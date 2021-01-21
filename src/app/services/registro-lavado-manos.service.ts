@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 export class RegistroLavadoManosService {
 
   constructor(private http:HttpClient) { }
-  public Lavado(usuario: any): Observable<any> {   
-    return this.http.post<any>(environment.urlAPI + '/api/Eventos/registrarIngresoLavado', usuario, {});
+  public Lavado(registroLavado: any): Observable<any> {   
+    return this.http.post<any>(environment.urlAPI + '/api/Eventos/registrarIngresoLavado', registroLavado, {});
   }
 }

@@ -15,8 +15,7 @@ export class RegistrarLavadoPage implements OnInit {
   data: any;
   nombreUsuario;
   codUsuario;
-  barcode: any ={};
-
+  barcode: any = [];
 
   respuesta: any = {
     codUsuario: "",
@@ -34,6 +33,11 @@ export class RegistrarLavadoPage implements OnInit {
   };
   codRegistro;
 
+  objeto = {
+    codLavamanos: "2",
+    codInstitucion: "1"    
+  };
+
   constructor(    
     private rutaActiva: ActivatedRoute,
     private barcodeScanner: BarcodeScanner,
@@ -50,6 +54,10 @@ export class RegistrarLavadoPage implements OnInit {
     //alert(this.codRegistro);
     this.ingresarRegistro();
   }
+
+
+
+
   ingresarRegistro() {
     this.data = JSON.parse(sessionStorage.getItem(Constantes.DATOS_SESION_USUARIO));
     this.nombreUsuario = this.data.nombres;
@@ -60,27 +68,21 @@ export class RegistrarLavadoPage implements OnInit {
   }
 
   LeerCode() {
-    // alert("entro");
+    
     this.barcodeScanner
       .scan()
       .then((barcodeData) => {
-        this.barcode = JSON.stringify(barcodeData['text']);        
-        alert(this.barcode.codLavamanos);
-        alert(this.barcode.codInstitucion);
+        //this.barcode = JSON.stringify(barcodeData['text']);   
+        this.barcode = JSON.parse(barcodeData['text']);
+        //this.barcode = this.barcode.replace(/\\"/g, '"'); 
+        var lavamanos = this.barcode[0]['codLavamanos'];     
+        var institucion = this.barcode[0]['codInstitucion'];
 
-        //alert(this.barcode[0].codInstitucion);
-          
-        // for (var clave in  barcode){
-        //   // Controlando que json realmente tenga esa propiedad
-        //   if (json.hasOwnProperty(clave)) {
-        //     // Mostrando en pantalla la clave junto a su valor
-        //     alert("La clave es " + clave+ " y el valor es " + json[clave]);
-        //   }
-        // }
+        //agrego las variables al objeto                 
         this.datosLavado.codRegistro = this.codRegistro;
         this.datosLavado.codUsuario = this.codUsuario;
-        this.datosLavado.codLavamanos = this.barcode.codLavamanos;
-        this.datosLavado.codInstitucion = this.barcode.codInstitucion;
+        this.datosLavado.codLavamanos = lavamanos;
+        this.datosLavado.codInstitucion = institucion;
         
         this.registroLavadoManos();
 
@@ -92,22 +94,25 @@ export class RegistrarLavadoPage implements OnInit {
 
   //se crea función para envío de datos de lavado de manos 
   registroLavadoManos(){ 
-    console.log(this.datosLavado);   
+    //console.log(this.datosLavado);   
     this.registroLavadoManosService.Lavado(this.datosLavado).pipe(
       finalize(() => {
-        console.log('Servicio validar codigo completado correctamente');
+        console.log('Servicio completado correctamente');
       })).subscribe(resp => {
         this.respuesta = resp
-        this.presentAlertaRegistroLavado();
-        //console.log(this.respuesta);
+        if(this.respuesta[0].fecha != null)
+        {
+          this.presentAlertaRegistroLavado();
+          //console.log(this.respuesta);
+        }        
       });
-
   }
   
   async presentAlertaRegistroLavado() {
     const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',      
-      message: '"Su lavado de manos ha sido exitoso"',
+      cssClass: 'my-custom-class',   
+      header: 'Tu lavado de manos se registró exitosamente',   
+      message: '¡Las manos limpias salvan Vidas!',      
       buttons: [
         {
           text: 'Ok',
@@ -119,4 +124,17 @@ export class RegistrarLavadoPage implements OnInit {
     });
     await alert.present();
   }
+
+  ingresarPaginaSintomas() {    
+    this.route.navigate(['/registrar-sintomas']);
+  }
+  ingresarPaginaInicio(){
+    this.route.navigate(['/pagina-inicio']);
+  }
+  ingresarPaginaCuidados(){
+    this.route.navigate(['/cuidados']);
+  }
+
+
+
 }//se realiza cambios el 18-01-2021

@@ -36,7 +36,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/pagina-inicio/pagina-inicio.module').then( m => m.PaginaInicioPageModule)
   },
   {
-    path: 'registrar-lavado',
+    path: 'registrar-lavado/:codRegistro',
     loadChildren: () => import('./pages/registrar-lavado/registrar-lavado.module').then( m => m.RegistrarLavadoPageModule)
   },
   {
@@ -47,11 +47,10 @@ const routes: Routes = [
     path: 'alertas',
     loadChildren: () => import('./pages/alertas/alertas.module').then( m => m.AlertasPageModule)
   },
-
-
-
-
-
+  {
+    path: 'estadisticas',
+    loadChildren: () => import('./pages/estadisticas/estadisticas.module').then( m => m.EstadisticasPageModule)
+  },
 ];
 
 @NgModule({

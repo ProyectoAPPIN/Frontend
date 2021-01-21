@@ -5,6 +5,8 @@ import { registroSinto } from 'src/app/models/sintomasRegistro';
 import { ObtenerSintomasService } from 'src/app/services/obtener-sintomas.service';
 import { Constantes } from 'src/app/utils/constantes.util';
 import { RegistrarSintomasPageModule } from './registrar-sintomas.module';
+import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-registrar-sintomas',
@@ -23,15 +25,61 @@ export class RegistrarSintomasPage implements OnInit {
   objeto:any;
   checkSeleccionado = false;
 
-  constructor(private obtenerSintomasService: ObtenerSintomasService) { }
+  constructor(
+    private obtenerSintomasService: ObtenerSintomasService,
+    private route: Router,
+    public alertController: AlertController,) { }
 
   ngOnInit() {
+    this.limpiarSintomas();
     this.obtenerSintomas();
-    this.ingresarRegistro();    
+    this.ingresarRegistro();        
     // this.datosAutogianostico();
     
   }
+
+  async presentAlertaSintomas() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',      
+      message: '!Debe seleccionar un sintoma para continuar¡',
+      buttons: [
+        {
+          text: 'Ok',
+          handler: () => {
+            return;           
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  async presentAlertaGuardadoSintomas() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',      
+      message: '!Los síntomas que reportaste se han guardado correctamente¡',
+      buttons: [
+        {
+          text: 'Ok',
+          handler: () => {
+            this.route.navigate(['/cuidados']);         
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  limpiarSintomas()  
+  {   
+    for (let sintoma in this.sintomasFiltrados )
+      {
+        this.sintomasFiltrados[sintoma].estado = false;          
+      }        
+  }
+
   obtenerSintomas() {
+    
     this.obtenerSintomasService.obtenerSintomas().pipe(
       finalize(() => {
         console.log('Servicio completado correctamente');
@@ -58,9 +106,17 @@ export class RegistrarSintomasPage implements OnInit {
 
 
   agregarSintoma(codSintoma:string)
-  {    
-  
+  {        
     if(codSintoma != "9"){
+      //limpiar el item ninguno de los anteriores
+      for (let sintoma in this.sintomasFiltrados )
+      {
+        if(this.sintomasFiltrados[sintoma].codSintoma == 9)
+        {         
+            this.sintomasFiltrados[sintoma].estado = false;      
+        }            
+      }        
+
       var existe = this.sintomasRegistrar.filter(x => x.codigo == codSintoma);
       var item = this.sintomasFiltrados.filter(x => x.codSintoma == codSintoma);
       
@@ -84,7 +140,11 @@ export class RegistrarSintomasPage implements OnInit {
         this.sintomasRegistrar.splice(i, 1 );        
       }
 
-    }else{
+    }
+    else
+    {
+      
+        //this.sintomasFiltrados[sintoma].estado = false;
         this.sintomasRegistrar = [];
         this.sintomaUsuario = {
           "codigoUsuario":this.codUsuario,
@@ -101,55 +161,43 @@ export class RegistrarSintomasPage implements OnInit {
                 this.sintomasFiltrados[sintoma].estado = false;
               }           
             }            
-          }         
-    }
-    // var element = <HTMLInputElement> document.getElementById("chk");
-    // var isChecked = element.checked;
-    // alert(isChecked);
-    // if(isChecked == false)
-    // {
-    //     this.sintomaUsuario = {
-    //     "codigoUsuario":this.codUsuario,
-    //     "codigo":codSintoma,
-    //     "estado":true
-    //     }
-    //   //Agrego el elemento al arreglo 
-    //   this.sintomasRegistrar.push(this.sintomaUsuario);  
-    //   console.log(this.sintomasRegistrar);
-    // }
-
-    // this.objeto = objeto;
-
-    // alert(objeto.checked);
-    // if(objeto.checked == false){
-    //   alert
-("agrego")
-    // }else{
-    //   alert("elimino");
-    // }
-  //   this.sintomaUsuario = {
-  //     "codigoUsuario":this.codUsuario,
-  //     "codigo":codSintoma,
-  //     "estado":true
-  //   }
-
-  //  //Agrego el elemento al arreglo 
-  //   this.sintomasRegistrar.push(this.sintomaUsuario);  
+        }         
+    }     
   }
 
-  registrarLavado(){
-  //llamar el servicio de registro de lavado
-  this.obtenerSintomasService.registroSintomas(this.sintomasRegistrar).pipe(
-    finalize(() => {
-      console.log('Servicio completado correctamente');
-      setTimeout(() => {
-        // this.spinner.hide();
-      }, 500);
+  registrarLavado(){    
+    if(this.sintomasRegistrar.length == 0){
+      this.presentAlertaSintomas();
+    }else{
+      //llamar el servicio de registro de lavado
+      //console.log(this.sintomasRegistrar);
+      this.obtenerSintomasService.registroSintomas(this.sintomasRegistrar).pipe(
+        finalize(() => {
+          console.log('Servicio completado correctamente');
+          setTimeout(() => {
+            // this.spinner.hide();
+          }, 500);
+        }
+        )).subscribe(resp => {
+          this.respuestaLavado = resp;
+          this.limpiarSintomas();
+          this.presentAlertaGuardadoSintomas();
+          //alert(this.respuestaLavado[0].mensaje);      
+        });
     }
-    )).subscribe(resp => {
-      this.respuestaLavado = resp;
-      alert(this.respuestaLavado[0].mensaje);      
-    });
+  
   }
+
+  ingresarPaginaLavadoManos() {    
+    var codigoNoti = "-1";    
+    this.route.navigate(['registrar-lavado/' + `${codigoNoti}`]);
+  }
+  ingresarPaginaInicio(){
+    this.route.navigate(['/pagina-inicio']);
+  }
+  ingresarPaginaCuidados(){
+    this.route.navigate(['/cuidados']);
+  }
+
 }
 //Ultimo avance 13-01-2021
