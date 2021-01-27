@@ -92,18 +92,16 @@ export class RegistrarLavadoPage implements OnInit {
         var institucion = this.barcode[0]['codInstitucion'];
         var fechaQR = this.barcode[0]['fecha']; 
         var fechaDia = "";
+        var mesConcatenado = ""; 
 
         var fechaactual = new Date();
         var dia = fechaactual.getDate();
         var mes = fechaactual.getMonth();
-        var ahno = fechaactual.getFullYear();   
-           
-        if(mes == 0){         
-          var mesd = '01';
-          fechaDia =  dia + "/" + mesd + "/" + ahno ;
-         }else{
-           fechaDia =  dia + "/" + mes + "/" + ahno ;
-         } 
+        var ahno = fechaactual.getFullYear();  
+        
+        mes =  mes + 1;    
+        mesConcatenado = "0" + mes;   
+        fechaDia =  dia + "/" + mesConcatenado + "/" + ahno ; 
            
          if( fechaDia != fechaQR ){
            this.presentAlertQRInvalido();  
