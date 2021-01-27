@@ -135,9 +135,19 @@ export class RegistrarSintomasPage implements OnInit {
             //Agrego el elemento al arreglo 
           this.sintomasRegistrar.push(this.sintomaUsuario);  
       }else{
-        var i = existe.indexOf;
-        //alert(i);
-        this.sintomasRegistrar.splice(i, 1 );        
+        //funcion para eliminar del array cuando desmarco el sintoma
+        //console.log(this.sintomasRegistrar);
+        var codSintomaEli = existe[0].codigo;
+        //console.log(existe);
+        //console.log(codSintomaEli);
+        for (var i=0; i <= this.sintomasRegistrar.length -1; i++ )
+        {
+           var codSintomaExiste = this.sintomasRegistrar[i].codigo;
+           if(codSintomaExiste == codSintomaEli){ 
+             //Elimino del objeto que se envia al api                      
+             this.sintomasRegistrar.splice(i, 1 );    
+           }           
+        }         
       }
 
     }
@@ -165,7 +175,7 @@ export class RegistrarSintomasPage implements OnInit {
     }     
   }
 
-  registrarLavado(){    
+  registrarLavado(){ 
     if(this.sintomasRegistrar.length == 0){
       this.presentAlertaSintomas();
     }else{
