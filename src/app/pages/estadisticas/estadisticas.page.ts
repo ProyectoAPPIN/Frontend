@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { LoginService } from 'src/app/services/login.service';
+import { Constantes } from 'src/app/utils/constantes.util';
 
 @Component({
   selector: 'app-estadisticas',
@@ -14,15 +15,22 @@ export class EstadisticasPage implements OnInit {
   totalAforo;
   totalOcupacion;
   porcentaje;
+  porAforo;
+  dataUniversidad: any;
+  universidad:number;
   constructor(private route: Router,
     private loginService: LoginService) { }
 
   ngOnInit() {
+    
+    this.dataUniversidad = JSON.parse(sessionStorage.getItem(Constantes.DATOS_SESION_UNIVERSIDAD));
+    this.universidad = this.dataUniversidad.codInstitucion;
+    //alert(this.universidad);
     this.obtenerEstadisticas();
   }
   /*Metodo para cargar las instituciones*/
   obtenerEstadisticas() {
-    this.loginService.estadisticas().pipe(
+    this.loginService.estadisticas(this.universidad).pipe(
       finalize(() => {
         console.log('Servicio completado correctamente');
         setTimeout(() => {
@@ -33,7 +41,9 @@ export class EstadisticasPage implements OnInit {
         this.estadisticas = resp;
         this.totalAforo = this.estadisticas[0].totalAforoSede;
         this.totalOcupacion = this.estadisticas[0].totUsuariosRegistrados;
-        this.porcentaje = (this.totalOcupacion * 100 ) / this.totalAforo;        
+        this.porcentaje = (this.totalOcupacion * 100 ) / this.totalAforo;   
+        this.porAforo = parseFloat(this.porcentaje).toFixed(1);
+        
         console.log(this.estadisticas);
       });
   }

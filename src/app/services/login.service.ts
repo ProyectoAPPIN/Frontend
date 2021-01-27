@@ -32,7 +32,7 @@ export class LoginService {
     return this.http.post<any>(environment.urlAPI + '/api/Usuario/Guardar', usuario, {});
   }
 
-  public estadisticas(): Observable<any[]> {
-    return this.http.get<any[]>(environment.urlAPI + '/api/Comunes/GetEstadisticas');
+  public estadisticas(codUniversidad:number): Observable<any[]> {
+    return this.http.get<any[]>(environment.urlAPI + '/api/Comunes/GetEstadisticas?'+`idInstitucion=${codUniversidad}`);
   }
 }

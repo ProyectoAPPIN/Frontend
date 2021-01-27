@@ -30,6 +30,10 @@ export class LoginPage implements OnInit {
   tipoDocumentos: any = [];
   instituciones: any = [];
   usuario: any = [];
+ 
+  datosUniversidad: any = [{    
+    codInstitucion: ""    
+  }];
 
   tipoDocumento;
   universidad;
@@ -184,14 +188,18 @@ export class LoginPage implements OnInit {
           /* Si el usuario esta activo pero no tiene ingreso a la sede */
           if (this.usuario[0].activo === true && this.usuario[0].ingresoActivo === "0") {
             sessionStorage.setItem(Constantes.DATOS_SESION_USUARIO, JSON.stringify(this.usuario[0]));
-            sessionStorage.setItem(Constantes.DATOS_SESION_UNIVERSIDAD, JSON.stringify(this.universidad));
+            
+            this.datosUniversidad[0].codInstitucion = this.universidad;            
+            sessionStorage.setItem(Constantes.DATOS_SESION_UNIVERSIDAD, JSON.stringify(this.datosUniversidad[0]));
             let opcionRouter = "1";            
             this.presentAlertUsuarioActivo(opcionRouter);
           } 
           /* Si el usuario esta activo pero si tiene ingreso a la sede */
           if (this.usuario[0].activo === true && this.usuario[0].ingresoActivo === "1") {
             sessionStorage.setItem(Constantes.DATOS_SESION_USUARIO, JSON.stringify(this.usuario[0]));
-            sessionStorage.setItem(Constantes.DATOS_SESION_UNIVERSIDAD, JSON.stringify(this.universidad));
+            this.datosUniversidad[0].codInstitucion = this.universidad;            
+            sessionStorage.setItem(Constantes.DATOS_SESION_UNIVERSIDAD, JSON.stringify(this.datosUniversidad[0]));
+            
             let opcionRouter = "2";
             this.presentAlertUsuarioActivo(opcionRouter);
           }  

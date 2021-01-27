@@ -59,6 +59,7 @@ export class RegistroEntradaPage implements OnInit {
     console.log('Codigo-Usuario', this.codUsuario);
 
   }
+
   LeerCode() {
     // alert("entro");
     this.barcodeScanner
@@ -67,9 +68,28 @@ export class RegistroEntradaPage implements OnInit {
         // this.barcode = barcodeData['text'];
         // this.datosEntrada.codInstitucion = this.barcode;
         this.barcode = JSON.parse(barcodeData['text']);
-        var institucion = this.barcode[0]['codInstitucion'];  
-        this.datosEntrada.codInstitucion = institucion;
-        this.registroEntrada();
+        var institucion = this.barcode[0]['codInstitucion']; 
+        var fechaQR = this.barcode[0]['fecha']; 
+        var fechaDia = ""; 
+        
+        var fechaactual = new Date();
+        var dia = fechaactual.getDate();
+        var mes = fechaactual.getMonth();
+        var ahno = fechaactual.getFullYear();        
+        if(mes == 0){         
+          var mesd = '01';
+          fechaDia =  dia + "/" + mesd + "/" + ahno ;
+         }else{
+           fechaDia =  dia + "/" + mes + "/" + ahno ;
+         } 
+         if( fechaDia != fechaQR ){
+           this.presentAlertQRInvalido();  
+           return;        
+        }else
+        {
+          this.datosEntrada.codInstitucion = institucion;
+          this.registroEntrada();          
+        }      
       })
       .catch(err => {
         this.barcode = JSON.stringify(err);
@@ -92,6 +112,25 @@ export class RegistroEntradaPage implements OnInit {
         //console.log(this.respuesta);
       });
   }
+
+  async presentAlertQRInvalido() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: '!Error¡',
+      message: 'No se puede registrar el ingreso, código QR invalido',
+      buttons: [
+        {
+          text: 'Ok',
+          handler: () => {
+            return;
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+
   async presentAlertDatosEntrada() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',

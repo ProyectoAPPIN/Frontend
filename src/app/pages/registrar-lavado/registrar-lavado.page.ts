@@ -55,9 +55,6 @@ export class RegistrarLavadoPage implements OnInit {
     this.ingresarRegistro();
   }
 
-
-
-
   ingresarRegistro() {
     this.data = JSON.parse(sessionStorage.getItem(Constantes.DATOS_SESION_USUARIO));
     this.nombreUsuario = this.data.nombres;
@@ -67,8 +64,24 @@ export class RegistrarLavadoPage implements OnInit {
     // console.log('Codigo-Usuario', this.codUsuario);
   }
 
-  LeerCode() {
-    
+  async presentAlertQRInvalido() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: '!Error¡',
+      message: 'No se puede registrar el lavado de manos, código QR invalido',
+      buttons: [
+        {
+          text: 'Ok',
+          handler: () => {
+            return;
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  LeerCode() {    
     this.barcodeScanner
       .scan()
       .then((barcodeData) => {
@@ -77,15 +90,33 @@ export class RegistrarLavadoPage implements OnInit {
         //this.barcode = this.barcode.replace(/\\"/g, '"'); 
         var lavamanos = this.barcode[0]['codLavamanos'];     
         var institucion = this.barcode[0]['codInstitucion'];
+        var fechaQR = this.barcode[0]['fecha']; 
+        var fechaDia = "";
 
-        //agrego las variables al objeto                 
-        this.datosLavado.codRegistro = this.codRegistro;
-        this.datosLavado.codUsuario = this.codUsuario;
-        this.datosLavado.codLavamanos = lavamanos;
-        this.datosLavado.codInstitucion = institucion;
-        
-        this.registroLavadoManos();
-
+        var fechaactual = new Date();
+        var dia = fechaactual.getDate();
+        var mes = fechaactual.getMonth();
+        var ahno = fechaactual.getFullYear();   
+           
+        if(mes == 0){         
+          var mesd = '01';
+          fechaDia =  dia + "/" + mesd + "/" + ahno ;
+         }else{
+           fechaDia =  dia + "/" + mes + "/" + ahno ;
+         } 
+           
+         if( fechaDia != fechaQR ){
+           this.presentAlertQRInvalido();  
+           return;        
+        }else
+        {
+         //agrego las variables al objeto                 
+          this.datosLavado.codRegistro = this.codRegistro;
+          this.datosLavado.codUsuario = this.codUsuario;
+          this.datosLavado.codLavamanos = lavamanos;
+          this.datosLavado.codInstitucion = institucion;         
+          this.registroLavadoManos();         
+        }     
       })
       .catch(err => {
         this.barcode = JSON.stringify(err);
