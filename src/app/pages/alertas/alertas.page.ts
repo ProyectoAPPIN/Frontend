@@ -45,7 +45,7 @@ export class AlertasPage implements OnInit {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: '!No existen notificaciones de lavado, pero tu registro es muy importante para nosotros,',
-      message: 'Si deseas realizarla acercate al lavamanos mas cercano!',
+      message: '¡Si deseas realizarla acércate al lavamanos más cercano!',
       buttons: [
         {
           text: 'Ok',
@@ -64,7 +64,7 @@ export class AlertasPage implements OnInit {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: '' + `${nombre}`+ ' tiene las siguientes notificaciones de lavado !',
-      message: 'Acercate, al lavamanos mas cercano segun la fecha y hora establecida',
+      message: 'Acércate, al lavamanos más cercano según la fecha y hora establecida',
       buttons: [
         {
           text: 'Ok'     
@@ -88,8 +88,8 @@ export class AlertasPage implements OnInit {
   async presentAlertRegistroLavado(codigoNoti:string) {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: 'Las manos limpias salvan vidas, Tu aporte es muy importante para nosotros, nos ayudas a combatir el COVID',
-      message: '"Por favor acercate al lavamanos mas cercano y realiza el registro leyendo el codigo QR."',
+      header: 'Las manos limpias salvan vidas, Tu aporte es muy importante para nosotros, nos ayudas a combatir el COVID-19',
+      message: '"Por favor acércate al lavamanos más cercano y realiza el registro leyendo el codigo QR."',
       buttons: [
         {
           text: 'Ok',

@@ -71,7 +71,7 @@ export class VerificacionPage implements OnInit {
         if (this.respuesta[0].codRespuesta != "1") {
           this.presentAlert(this.respuesta[0].codUsuario);
         } else {
-          this.presentAlertConfirmacion('El usuario se activo correctamente, !debe iniciar session para usar la aplicación');
+          this.presentAlertConfirmacion('El usuario se activó correctamente, ¡debe iniciar sessión para usar la aplicación!');
         }
 
       });
@@ -79,7 +79,7 @@ export class VerificacionPage implements OnInit {
   async presentAlert(mensaje: string) {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: 'Confirm',
+      header: 'Confirmación',
       subHeader: 'Subtitle',
       message: mensaje,
       buttons: ['OK']

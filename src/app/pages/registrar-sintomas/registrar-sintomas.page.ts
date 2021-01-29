@@ -24,6 +24,7 @@ export class RegistrarSintomasPage implements OnInit {
   respuestaLavado:any=[];
   objeto:any;
   checkSeleccionado = false;
+  chjk:boolean = false;;
 
   constructor(
     private obtenerSintomasService: ObtenerSintomasService,
@@ -105,17 +106,31 @@ export class RegistrarSintomasPage implements OnInit {
   }
 
 
-  agregarSintoma(codSintoma:string)
-  {        
+  agregarSintoma(codSintoma:string, check: boolean)
+  {     
     if(codSintoma != "9"){
-      //limpiar el item ninguno de los anteriores
-      for (let sintoma in this.sintomasFiltrados )
-      {
-        if(this.sintomasFiltrados[sintoma].codSintoma == 9)
-        {         
-            this.sintomasFiltrados[sintoma].estado = false;      
-        }            
-      }        
+      //Quito el check de ninguno de los anteriores si se selecciona un sintoma diferente
+      //alert(check);
+      this.sintomasFiltrados.forEach(row =>  {
+        //alert(row.estado)
+        if(row.codSintoma == 9 ){        
+          if(check == true){
+            row.estado = !check;
+          }else{
+            row.estado = check;
+          }
+          
+        }
+      });              
+       //Elimino el sintoma del objeto a registrar
+      for (var i=0; i <= this.sintomasRegistrar.length -1; i++ )
+        {
+           var codSintomaExiste = this.sintomasRegistrar[i].codigo;
+           if(codSintomaExiste == 9){ 
+             //Elimino del objeto que se envia al api                      
+             this.sintomasRegistrar.splice(i, 1 );    
+           }           
+        }       
 
       var existe = this.sintomasRegistrar.filter(x => x.codigo == codSintoma);
       var item = this.sintomasFiltrados.filter(x => x.codSintoma == codSintoma);
@@ -152,17 +167,20 @@ export class RegistrarSintomasPage implements OnInit {
 
     }
     else
-    {
-      
-        //this.sintomasFiltrados[sintoma].estado = false;
+    { 
         this.sintomasRegistrar = [];
-        this.sintomaUsuario = {
-          "codigoUsuario":this.codUsuario,
-          "codigo":codSintoma,
-          "estado":true
-          }
-            //Agrego el elemento al arreglo 
-          this.sintomasRegistrar.push(this.sintomaUsuario);          
+        //console.log(this.sintomasRegistrar);
+        if(check != true){
+          //alert('eee');
+          this.sintomaUsuario = {
+            "codigoUsuario":this.codUsuario,
+            "codigo":codSintoma,
+            "estado":true
+            }
+             //Agrego el elemento al arreglo 
+          this.sintomasRegistrar.push(this.sintomaUsuario);  
+        }
+                
           //this.checkSeleccionado = false;
           for (let sintoma in this.sintomasFiltrados ){
             if(this.sintomasFiltrados[sintoma].codSintoma != 9){
@@ -170,8 +188,11 @@ export class RegistrarSintomasPage implements OnInit {
                 //alert(this.sintomasFiltrados[sintoma].codSintoma);
                 this.sintomasFiltrados[sintoma].estado = false;
               }           
+            }else{
+              this.sintomasFiltrados[sintoma].estado = true;
             }            
-        }         
+        }  
+        //console.log(this.sintomasFiltrados);       
     }     
   }
 

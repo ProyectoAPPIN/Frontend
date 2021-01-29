@@ -5,6 +5,7 @@ import { UltimoLavadoService } from 'src/app/services/ultimo-lavado.service';
 import { VerificacionService } from 'src/app/services/verificacion.service';
 import { Constantes } from 'src/app/utils/constantes.util';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-pagina-inicio',
@@ -28,7 +29,8 @@ export class PaginaInicioPage implements OnInit {
     private registroEntradaService: RegistroEntradaService,
     private verificacioncodService: VerificacionService,
     private ultimoLavadoService: UltimoLavadoService,
-    private route: Router
+    private route: Router,
+    public alertController: AlertController
   ) { }
 
   ngOnInit() {
@@ -89,6 +91,31 @@ export class PaginaInicioPage implements OnInit {
   }
   ingresarPaginaEstadisticas(){
     this.route.navigate(['/estadisticas']);
+  }
+  cerrarSesion(){
+    this.presentAlertaCerrarSession();
+  } 
+  async presentAlertaCerrarSession() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',      
+      message: '¿Desea cerrar la sesión?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Aceptar',
+          handler: () => {
+            this.route.navigate(['login']);
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
   
 }

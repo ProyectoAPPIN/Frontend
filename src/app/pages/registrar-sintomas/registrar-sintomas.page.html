@@ -6,7 +6,7 @@
 <div class="container">
   <br>
   <div class="ion-text-center">
-    <label>Autodiagnostico, <b>{{nombreUsuario}}</b></label>    
+    <label>Autodiagnóstico, <b>{{nombreUsuario}}</b></label>    
   </div>
   <div class="ion-text-center">
     <label><h4>Selecciona los síntomas que presentas</h4></label>
@@ -16,9 +16,9 @@
       <div *ngFor="let sinto of sintomasFiltrados" class="borderColor" expand="block">
         <ion-item>
           <ion-label>{{sinto.descripcion}}</ion-label>
-          <input type="checkbox"  class="checkbox"  id="chk" type="checkbox"  [checked]="sinto.estado" 
+          <input #check type="checkbox"  class="checkbox"  id="chk" type="checkbox"  [checked]="sinto.estado" 
                  class="listaSintoma" [value]="sinto.codSintoma"  color="danger"  
-                (click)="agregarSintoma(sinto.codSintoma)">  
+                (click)="agregarSintoma(sinto.codSintoma, !check.checked)">  
         </ion-item>
       </div> 
       <br>    
